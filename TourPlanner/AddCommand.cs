@@ -14,12 +14,14 @@ namespace TourPlanner
         private MainVM associatedVM;
         public bool CanExecute(object? parameter)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return true;
         }
 
         public void Execute(object? parameter)
         {
             //throw new NotImplementedException();
+            associatedVM.AddRoute();
         }
 
         public AddCommand(MainVM vm)
