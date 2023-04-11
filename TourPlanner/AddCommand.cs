@@ -19,12 +19,12 @@ namespace TourPlanner
 
         public void Execute(object? parameter)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public AddCommand(MainVM vm)
         {
-
+            associatedVM = vm;
         }
     }
 }

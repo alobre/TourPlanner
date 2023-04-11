@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace TourPlanner
 {
-    public class Route : INotifyPropertyChanged
+    public class Route : ChangeNotifier
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
