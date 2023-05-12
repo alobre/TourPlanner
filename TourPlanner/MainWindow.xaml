@@ -4,11 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TourPlanner"
+        x:Name="WndwMain"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="400">
     <Window.Resources>
         <ResourceDictionary>
             <Style TargetType="{x:Type ItemsControl}">
+                <Setter Property="Margin" Value="5"/>
                 <Setter Property="ItemsPanel">
                     <Setter.Value>
                         <ItemsPanelTemplate>
@@ -24,37 +26,43 @@
             </Style>
         </ResourceDictionary>
     </Window.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-            <StackPanel>
+        <StackPanel Margin="10">
             <ItemsControl>
-                <TextBlock Text="Start"/>
-                <TextBox Grid.Column="1" Text="{Binding TargetRoute.Start}"/>
+                <TextBlock Text="First Name"/>
+                <TextBox  Grid.Column="1" Text="{Binding TargetRoute.Start}"/>
             </ItemsControl>
             <ItemsControl>
-                <TextBlock Text="Destination"/>
-                <TextBox Grid.Column="1" Text="{Binding TargetRoute.Destination}"/>
+                <TextBlock Text="Last Name"/>
+                <TextBox  Grid.Column="1" Text="{Binding TargetRoute.Destination}"/>
             </ItemsControl>
             <ItemsControl>
-                <Button Content="Add" Height="30" Width="120" Margin="5,20" Grid.Column="1" Command="{Binding CMDAdd}"/>
+                <TextBlock Text="Age"/>
+                <TextBox  Grid.Column="1" Text="{Binding TargetRoute.Age}"/>
             </ItemsControl>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5,20">
+                <Button Height="30" Width="120" Content="Add" Margin="5" HorizontalAlignment="Right" Command="{Binding CMDAdd}"/>
+                <Button Height="30" Width="120" Content="Delete" Margin="5" HorizontalAlignment="Right" CommandParameter="{Binding ElementName=lstView,Path=SelectedItem}" Command="{Binding CMDDelete}"/>
+            </StackPanel>
+            
         </StackPanel>
-        <ListView Grid.Row="1"
-        ItemsSource="{Binding Routes}"          
-        >
+        <ListView x:Name="lstView" Grid.Row="1" Background="#FFEDE9C5" ItemsSource="{Binding Routes}" SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
                         <TextBlock Text="{Binding Start}"/>
-                        <TextBlock Text=" - "/>
+                        <TextBlock Text=" - " Foreground="Blue"/>
                         <TextBlock Text="{Binding Destination}"/>
+                        <TextBlock Text=" - " Foreground="Blue"/>
+                        <TextBlock Text="{Binding Age}"/>
                     </WrapPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
     </Grid>
+    
 </Window>

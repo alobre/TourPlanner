@@ -12,8 +12,8 @@
       }
     ],
     "additionalProbingPaths": [
-      "C:\\Users\\alobre\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\alobre\\.nuget\\packages"
+      "C:\\Users\\wsowy\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\wsowy\\.nuget\\packages"
     ],
     "configProperties": {
       "Microsoft.NETCore.DotNetHostPolicy.SetAppPaths": true

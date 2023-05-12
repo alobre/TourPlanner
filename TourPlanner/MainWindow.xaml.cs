@@ -23,7 +23,7 @@ namespace TourPlanner
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainVM(); //Connecting the view with ViewModel
+            DataContext = new MainVM(); //Connecting the view with viewmodel
         }
     }
 }

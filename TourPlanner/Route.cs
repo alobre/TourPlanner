@@ -1,29 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
-using System.Windows.Input;
+using Haley.Models;
+using Haley.Abstractions;
+using Haley.MVVM;
 
 namespace TourPlanner
 {
     public class Route : ChangeNotifier
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propName)
+        private string _Start;
+        public string Start
         {
-            PropertyChanged?.Invoke(this.PropertyChanged, new PropertyChangedEventArgs(propName));
+            get { return _Start; }
+            set { _Start = value; OnPropertyChanged(nameof(Start)); }
         }
 
-        private string _Start;
-		public string Start
-		{
-			get { return _Start; }
-			set { _Start = value; OnPropertyChanged(nameof(Start)); }
-		}
         private string _Destination;
         public string Destination
         {
@@ -31,5 +26,13 @@ namespace TourPlanner
             set { _Destination = value; OnPropertyChanged(nameof(Destination)); }
         }
 
+        private string _Age;
+        public string Age
+        {
+            get { return _Age; }
+            set { _Age = value; OnPropertyChanged(nameof(Age)); }
+        }
+
+        public Route() { }
     }
 }
