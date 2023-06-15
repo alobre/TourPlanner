@@ -1,55 +1,52 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using System.Collections.ObjectModel;
+using Haley.MVVM;
 using Haley.Models;
 using Haley.Abstractions;
-using Haley.MVVM;
 
 namespace TourPlanner
 {
     public class MainVM : ChangeNotifier
     {
-        private Route route;
-        private Tour tour;
-        public Route TargetRoute
+        private Tour _targetTour;
+        public Tour TargetTour
         {
-            get { return route; }
-            set { route = value; OnPropertyChanged(nameof(TargetRoute)); }
+            get { return _targetTour; }
+            set { _targetTour = value; OnPropertyChanged(nameof(TargetTour)); }
         }
 
-        private ObservableCollection<Route> _routes; //ONLY WHEN ADDED/OR REMOVED (NOT FOR INTERNAL PROPERTY CHANGES)
-        public ObservableCollection<Route> Routes
+        private ObservableCollection<Tour> _tours;
+        public ObservableCollection<Tour> Tours
         {
-            get { return _routes; }
-            set { _routes = value; }
+            get { return _tours; }
+            set { _tours = value; }
         }
 
-        public void AddRoute()
+        public void AddTour()
         {
-            Routes.Add(TargetRoute); //Add it to thecollection
-            TargetRoute = new Route(); //resetting it.
+            Tours.Add(TargetTour); // Add it to the collection
+            TargetTour = new Tour(); // Resetting it
         }
 
-        public ICommand CMDAdd => new DelegateCommand(AddRoute);
-        public ICommand CMDDelete => new DelegateCommand<Route>(DeleteRoute);
+        public ICommand CMDAdd => new DelegateCommand(AddTour);
+        public ICommand CMDDelete => new DelegateCommand<Tour>(DeleteTour);
 
-        private void DeleteRoute(Route obj)
+        private void DeleteTour(Tour tour)
         {
-            if (obj == null) return;
-            if (!Routes.Contains(obj)) return;
+            if (tour == null) return;
+            if (!Tours.Contains(tour)) return;
 
-            Routes.Remove(obj);
+            Tours.Remove(tour);
         }
 
         public MainVM()
         {
-            Routes = new ObservableCollection<Route>();
-            TargetRoute = new Route();
+            Tours = new ObservableCollection<Tour>();
+            TargetTour = new Tour();
+
+
         }
     }
 }

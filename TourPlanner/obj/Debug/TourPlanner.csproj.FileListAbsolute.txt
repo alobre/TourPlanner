@@ -83,3 +83,5 @@ C:\Users\wsowy\Documents\FH\S04\SWEN\TourPlanner\TourPlanner\bin\Debug\Newtonsof
 C:\Users\wsowy\Documents\FH\S04\SWEN\TourPlanner\TourPlanner\obj\Debug\UI\Views\MainWindow.g.cs
 C:\Users\wsowy\Documents\FH\S04\SWEN\TourPlanner\TourPlanner\obj\Debug\UI\Views\MainWindow.baml
 C:\Users\wsowy\Documents\FH\S04\SWEN\TourPlanner\TourPlanner\obj\Debug\UI\Views\App.g.cs
+C:\Users\wsowy\Documents\FH\S04\SWEN\TourPlanner\TourPlanner\obj\Debug\UI\Views\NewTourDialog.g.cs
+C:\Users\wsowy\Documents\FH\S04\SWEN\TourPlanner\TourPlanner\obj\Debug\UI\Views\NewTourDialog.baml

@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:TourPlanner"
         x:Name="WndwMain"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="400">
+        Title="MainWindow" Height="800" Width="1200">
+
     <Window.Resources>
         <ResourceDictionary>
             <Style TargetType="{x:Type ItemsControl}">
@@ -16,9 +17,17 @@
                         <ItemsPanelTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
                             </Grid>
                         </ItemsPanelTemplate>
                     </Setter.Value>
@@ -27,42 +36,63 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
-        <StackPanel Margin="10">
-            <ItemsControl>
-                <TextBlock Text="First Name"/>
-                <TextBox  Grid.Column="1" Text="{Binding TargetRoute.Start}"/>
-            </ItemsControl>
-            <ItemsControl>
-                <TextBlock Text="Last Name"/>
-                <TextBox  Grid.Column="1" Text="{Binding TargetRoute.Destination}"/>
-            </ItemsControl>
-            <ItemsControl>
-                <TextBlock Text="Age"/>
-                <TextBox  Grid.Column="1" Text="{Binding TargetRoute.Age}"/>
-            </ItemsControl>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5,20">
-                <Button Height="30" Width="120" Content="Add" Margin="5" HorizontalAlignment="Right" Command="{Binding CMDAdd}"/>
-                <Button Height="30" Width="120" Content="Delete" Margin="5" HorizontalAlignment="Right" CommandParameter="{Binding ElementName=lstView,Path=SelectedItem}" Command="{Binding CMDDelete}"/>
-            </StackPanel>
-            
-        </StackPanel>
-        <ListView x:Name="lstView" Grid.Row="1" Background="#FFEDE9C5" ItemsSource="{Binding Routes}" SelectionMode="Single">
+        <Button Grid.Row="1" Grid.Column="0" Content="New Tour" Click="bt_newTourDialog"/>
+        <ListView x:Name="lstView" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Background="#FFEDE9C5" ItemsSource="{Binding Tours}" SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
-                        <TextBlock Text="{Binding Start}"/>
+                        <TextBlock Text="{Binding Name}"/>
                         <TextBlock Text=" - " Foreground="Blue"/>
-                        <TextBlock Text="{Binding Destination}"/>
+                        <TextBlock Text="{Binding Description}"/>
                         <TextBlock Text=" - " Foreground="Blue"/>
-                        <TextBlock Text="{Binding Age}"/>
+                        <TextBlock Text="{Binding Distance}"/>
+                        <TextBlock Text=" - " Foreground="Blue"/>
+                        <TextBlock Text="{Binding TransportType}"/>
+                        <TextBlock Text=" - " Foreground="Blue"/>
+                        <TextBlock Text="{Binding EstimatedTime}"/>
+                        <TextBlock Text=" - " Foreground="Blue"/>
+                        <TextBlock Text="{Binding RouteInformationImageUrl}"/>
                     </WrapPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <DockPanel Height="22" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New Tour" Command="{Binding AddNewTour}"/>
+                    <MenuItem Header="_New Tour Log" Command="{Binding addtourlog}"></MenuItem>
+                    <MenuItem Header="_Open" Command="{Binding JsonIn}"/>
+                    <MenuItem Header="_Save" Command="{Binding JSONout}" />
+                    <Separator />
+                    <MenuItem Header="_Exit" Command="{Binding Exit}"/>
+                </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="_Delete Tour" Command="{Binding DeleteWindow}"></MenuItem>
+                    <MenuItem Header="_Modify Tour" Command="{Binding ModifyWindow}"></MenuItem>
+                    <MenuItem Header="_Delete Tour Log" Command="{Binding DeleteTourLog}"></MenuItem>
+                    <MenuItem Header="_Modify Tour Log" Command="{Binding ModifyTourLog}"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="_Options">
+                    <MenuItem Header="_Refresh" Command="{Binding RefreshWindow}"></MenuItem>
+                    <MenuItem Header="_Create PDF" Command="{Binding CreatePdf}"></MenuItem>
+                    <MenuItem Header="_Create Summarize" Command="{Binding CreateSumm}"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="_Help">
+                </MenuItem>
+            </Menu>
+        </DockPanel>
     </Grid>
     
 </Window>
