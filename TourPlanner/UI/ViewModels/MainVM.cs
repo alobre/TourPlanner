@@ -15,6 +15,7 @@ namespace TourPlanner
     public class MainVM : ChangeNotifier
     {
         private Route route;
+        private Tour tour;
         public Route TargetRoute
         {
             get { return route; }

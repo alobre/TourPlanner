@@ -9,12 +9,12 @@ QuickMVVMSetup
 none
 false
 DEBUG;TRACE
-C:\Users\wsowy\Documents\FH\S04\SWEN\TourPlanner\TourPlanner\App.xaml
-1219584333
+C:\Users\wsowy\Documents\FH\S04\SWEN\TourPlanner\TourPlanner\UI\Views\App.xaml
+11736979871
 11725967632
-8-646453188
-40355299571
-MainWindow.xaml;
+9-746272285
+411233265875
+UI\Views\MainWindow.xaml;
 
-True
+False
 
