@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuickMVVMSetup.DL.Model
+namespace TourPlanner.DL.Model
 {
     internal class Route
     {

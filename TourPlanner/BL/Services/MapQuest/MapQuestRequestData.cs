@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuickMVVMSetup.BL.Services.MapQuest
+namespace TourPlanner.BL.Services.MapQuest
 {
     public class MapQuestRequestData
     {

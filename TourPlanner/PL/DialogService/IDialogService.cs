@@ -1,12 +1,12 @@
-﻿using QuickMVVMSetup.BL.Services;
+﻿using TourPlanner.BL.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using QuickMVVMSetup.BL.Services.MapQuest;
+using TourPlanner.BL.Services.MapQuest;
 
-namespace QuickMVVMSetup.PL.DialogService
+namespace TourPlanner.PL.DialogService
 {
     internal interface IDialogService
     {

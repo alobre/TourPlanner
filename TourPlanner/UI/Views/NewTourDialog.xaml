@@ -1,9 +1,9 @@
-﻿<Window x:Class="QuickMVVMSetup.UI.Views.NewTourDialog"
+﻿<Window x:Class="TourPlanner.UI.Views.NewTourDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:QuickMVVMSetup.UI.Views"
+        xmlns:local="clr-namespace:TourPlanner.UI.Views"
         mc:Ignorable="d"
         Title="NewTour" Width="600" Height="250" MaxHeight="250" MaxWidth="600" MinHeight="250" MinWidth="600">
     <Grid>

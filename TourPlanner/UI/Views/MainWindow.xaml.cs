@@ -1,4 +1,4 @@
-﻿using QuickMVVMSetup.UI.Views;
+﻿using TourPlanner.UI.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +25,7 @@ namespace TourPlanner
         {
             InitializeComponent();
             DataContext = new MainVM(); //Connecting the view with viewmodel
+
         }
 
         private void bt_newTourDialog(object sender, RoutedEventArgs e)

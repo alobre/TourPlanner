@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuickMVVMSetup.UI.ViewModels
+namespace TourPlanner.UI.ViewModels
 {
     internal class NewTourDialog
     {

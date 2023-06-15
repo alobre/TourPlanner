@@ -3,29 +3,29 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Net.Http;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using System.Windows;
+using TourPlanner.BL.Services.Logging;
 
-namespace QuickMVVMSetup.BL.Services.MapQuest
+namespace TourPlanner.BL.Services.MapQuest
 {
     public class MapQuestRequestHandler
     {
 
-        /*
-         * http://www.mapquestapi.com/directions/v2/route?key=mpUdVgf8ptUM5Bum4hKF2yKU30TlOLw4&from=1150 Jurekgasse,Vienna,AT&to=1150 Arnsteingasse, Vienna, AT
-         * https://open.mapquestapi.com/staticmap/v5/map?key=mpUdVgf8ptUM5Bum4hKF2yKU30TlOLw4&start=1150 Jurekgasse,Vienna,AT&end=1150 Arnsteingasse, Vienna, AT
-        */
+        
         public static async Task<(Rootobject? route, BitmapImage? image, string URL)> GetRouteAsync(MapQuestRequestData start, MapQuestRequestData dest)
         {
             try
             {
 
                 using var client = new HttpClient();
-                var res = await client.GetAsync($"http://www.mapquestapi.com/directions/v2/route?key=mpUdVgf8ptUM5Bum4hKF2yKU30TlOLw4&from=sd{start.GetString()}&to={dest.GetString()}");
+                var res = await client.GetAsync($"http://www.mapquestapi.com/directions/v2/route?key=y0MJ3PFzkkliOvNfcFm49CPFMpKj65t5&from=sd{start.GetString()}&to={dest.GetString()}");
 
                 var json = await res.Content.ReadAsStringAsync();
                 var imgres = GetRouteImageAsync(start, dest).Result;

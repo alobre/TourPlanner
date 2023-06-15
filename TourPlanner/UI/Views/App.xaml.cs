@@ -13,5 +13,12 @@ namespace TourPlanner
     /// </summary>
     public partial class App : Application
     {
+        [STAThread]
+        public static void Main()
+        {
+            TourPlanner.App app = new TourPlanner.App();
+            app.InitializeComponent();
+            app.Run();
+        }
     }
 }
