@@ -92,7 +92,18 @@
                 <MenuItem Header="_Help">
                 </MenuItem>
             </Menu>
+
         </DockPanel>
+        <ListView Margin="10,10,0,13" ItemsSource="{Binding Tours}" Name="ListView1" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0" Width="194" Height="200">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" />
+                        <Button Grid.Row="1" Grid.Column="0" Content="Delete Tour" Command="{Binding DeleteTourCommand}" CommandParameter="{Binding SelectedItem, ElementName=lstView}" Click="DeleteTour_Click"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
-    
+
 </Window>

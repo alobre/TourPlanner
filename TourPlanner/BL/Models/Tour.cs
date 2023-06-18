@@ -158,6 +158,7 @@ namespace TourPlanner
             if (tour != null)
             {
                 tour.Name = updatedTour.Name;
+
                 tour.Description = updatedTour.Description;
                 tour.TransportType = updatedTour.TransportType;
                 tour.Distance = updatedTour.Distance;
