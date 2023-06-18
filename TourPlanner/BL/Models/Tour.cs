@@ -8,11 +8,26 @@ using Haley.Models;
 using Haley.Abstractions;
 using Haley.MVVM;
 using Newtonsoft.Json;
+using System.Net;
+using System.Windows.Media.Imaging;
+using JsonIgnoreAttribute = Newtonsoft.Json.JsonIgnoreAttribute;
 
 namespace TourPlanner
 {
     public class Tour : ChangeNotifier
     {
+        public Tour(string name, string tour_desc, string from, string to, string transport_type, float distance, int time, BitmapImage route_information, string image_link)
+        {
+            Name = name;
+            Description = tour_desc;
+            From = from;
+            To = to;
+            TransportType = transport_type;
+            Distance = distance;
+            Time = time;
+            RouteDetails = route_information;
+            RouteImage = image_link;
+        }
         private string _name;
         public string Name
         {
@@ -26,7 +41,18 @@ namespace TourPlanner
             get { return _description; }
             set { _description = value; OnPropertyChanged(nameof(Description)); }
         }
-
+        private string _from;
+        public string From
+        {
+            get { return _from; }
+            set { _from = value; OnPropertyChanged(nameof(From)); }
+        }
+        private string _to;
+        public string To
+        {
+            get { return _to; }
+            set { _to = value; OnPropertyChanged(nameof(To)); }
+        }
         private string _transportType;
         public string TransportType
         {
@@ -41,18 +67,24 @@ namespace TourPlanner
             set { _distance = value; OnPropertyChanged(nameof(Distance)); }
         }
 
-        private TimeSpan _estimatedTime;
-        public TimeSpan EstimatedTime
+        private int _time;
+        public int Time
         {
-            get { return _estimatedTime; }
-            set { _estimatedTime = value; OnPropertyChanged(nameof(EstimatedTime)); }
+            get { return _time; }
+            set { _time = value; OnPropertyChanged(nameof(Time)); }
         }
 
-        private string _routeInformationImageUrl;
-        public string RouteInformationImageUrl
+        private string _routeImage;
+        public string RouteImage
         {
-            get { return _routeInformationImageUrl; }
-            set { _routeInformationImageUrl = value; OnPropertyChanged(nameof(RouteInformationImageUrl)); }
+            get { return _routeImage; }
+            set { _routeImage = value; OnPropertyChanged(nameof(RouteImage)); }
+        }
+        [JsonIgnore]
+        private BitmapImage _routeDetails;
+        public BitmapImage RouteDetails {
+            get { return _routeDetails; }
+            set { _routeDetails = value; OnPropertyChanged(nameof(_routeDetails)); }
         }
 
         private List<TourLog> _logs;
@@ -129,8 +161,8 @@ namespace TourPlanner
                 tour.Description = updatedTour.Description;
                 tour.TransportType = updatedTour.TransportType;
                 tour.Distance = updatedTour.Distance;
-                tour.EstimatedTime = updatedTour.EstimatedTime;
-                tour.RouteInformationImageUrl = updatedTour.RouteInformationImageUrl;
+                tour.Time = updatedTour.Time;
+                tour.RouteImage = updatedTour.RouteImage;
             }
         }
 

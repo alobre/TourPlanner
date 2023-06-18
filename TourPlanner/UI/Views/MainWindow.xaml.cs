@@ -27,13 +27,19 @@ namespace TourPlanner
             DataContext = new MainVM(); //Connecting the view with viewmodel
 
         }
+        private void OpenTourDialog()
+        {
+            NewTourDialog newTourDialog = new NewTourDialog();
+            newTourDialog.Owner = this; // Set the owner of the dialog to the MainWindow
+            newTourDialog.ShowDialog();
+        }
 
         private void bt_newTourDialog(object sender, RoutedEventArgs e)
         {
-            NewTourDialog newTourDialog = new NewTourDialog();
+
 
             // Show the new window
-            newTourDialog.Show();
+            OpenTourDialog();
         }
     }
 }

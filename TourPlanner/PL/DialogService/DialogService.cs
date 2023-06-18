@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using TourPlanner.BL.Services.MapQuest;
 using TourPlanner.UI.Views;
 
-namespace TourPlanner.PL.DialogService
+namespace TourPlanner.PL.DialogServices
 {
     internal class DialogService : IDialogService
     {
@@ -16,19 +16,30 @@ namespace TourPlanner.PL.DialogService
         {
             var dialog = new NewTourDialog();
             dialog.Owner = Application.Current.MainWindow;
+
             EventHandler closeEventHandler = null;
             closeEventHandler = (s, e) =>
             {
-                callback(dialog.DialogResult.ToString());
+                /*callback(dialog.DialogResult.ToString());
+                dialog.Closed -= closeEventHandler;*/
+                callback((bool)dialog.DialogResult ? "Success" : "Cancel"); // Invoke the callback with the appropriate result
                 dialog.Closed -= closeEventHandler;
             };
 
             dialog.Closed += closeEventHandler;
-            dialog.ShowDialog();
-            MapQuestRequestData start = new MapQuestRequestData(dialog.Start_AreaCode, dialog.Start_Address, dialog.Start_City, dialog.Start_Country);
-            MapQuestRequestData dest = new MapQuestRequestData(dialog.Dest_AreaCode, dialog.Dest_Address, dialog.Dest_City, dialog.Dest_Country); ;
+            /*dialog.ShowDialog();*/
 
-            return (start, dest);
+           /* if (dialog.ShowDialog() == true)
+            {*/
+                MapQuestRequestData start = new MapQuestRequestData(dialog.Start_AreaCode, dialog.Start_Address, dialog.Start_City, dialog.Start_Country);
+                MapQuestRequestData dest = new MapQuestRequestData(dialog.Dest_AreaCode, dialog.Dest_Address, dialog.Dest_City, dialog.Dest_Country); ;
+                return (start, dest);
+        /*}
+            else
+            {
+                // Return default values or handle cancellation accordingly
+                return (null, null);
+            }*/
         }
     }
 }

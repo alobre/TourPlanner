@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TourPlanner.BL.Services.MapQuest;
 
-namespace TourPlanner.PL.DialogService
+namespace TourPlanner.PL.DialogServices
 {
     internal interface IDialogService
     {

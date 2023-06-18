@@ -30,12 +30,18 @@ namespace TourPlanner.UI.Views
         public NewTourDialog()
         {
             InitializeComponent();
+            DataContext = new MainVM();
         }
-
+        public bool DialogResult { get; private set; }
         private void b_finish_Click(object sender, RoutedEventArgs e)
         {
-            /*DialogResult = true;*/
-            Close();
+            
+            if (DataContext is MainVM viewModel)
+            {
+                viewModel.AddNewTour.Execute(null);
+            }
+            DialogResult = true;
+            Close(); // Close the current dialog
         }
     }
 }
