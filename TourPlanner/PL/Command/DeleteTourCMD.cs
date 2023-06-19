@@ -1,30 +1,34 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Input;
 
 namespace TourPlanner.PL.Command
 {
-    public class DeleteTourCMD : ICommand
+    internal class DeleteTourCMD : ICommand
     {
-        private readonly Action<Tour> _execute;
+        private MainVM _viewModel;
 
-        public event EventHandler CanExecuteChanged;
-
-        public DeleteTourCMD(Action<Tour> execute)
+        public DeleteTourCMD(MainVM viewModel)
         {
-            _execute = execute;
+            _viewModel = viewModel;
+        }
+
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
 
         public bool CanExecute(object parameter)
         {
-            // You can implement your own logic here to determine if the command can be executed
-            return true;
+            return _viewModel.TargetTour != null;
         }
 
         public void Execute(object parameter)
         {
             if (parameter is Tour tour)
             {
-                _execute?.Invoke(tour);
+                _viewModel.DeleteTourAsync(tour);
             }
         }
     }

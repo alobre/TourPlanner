@@ -25,7 +25,8 @@ namespace TourPlanner.BL.Services.MapQuest
             {
 
                 using var client = new HttpClient();
-                var res = await client.GetAsync($"http://www.mapquestapi.com/directions/v2/route?key=y0MJ3PFzkkliOvNfcFm49CPFMpKj65t5&from=sd{start.GetString()}&to={dest.GetString()}");
+                string URI = $"http://www.mapquestapi.com/directions/v2/route?key=y0MJ3PFzkkliOvNfcFm49CPFMpKj65t5&from=sd{start.GetString()}&to={dest.GetString()}";
+                var res = await client.GetAsync(URI);
 
                 var json = await res.Content.ReadAsStringAsync();
                 var imgres = GetRouteImageAsync(start, dest).Result;

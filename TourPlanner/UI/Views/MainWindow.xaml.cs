@@ -42,13 +42,13 @@ namespace TourPlanner
 
         private void DeleteTour_Click(object sender, RoutedEventArgs e)
         {
-            string messageBoxText = "Do you want to save changes?";
+           /* string messageBoxText = "Do you want to save changes?";
             string caption = "Word Processor";
             MessageBoxButton button = MessageBoxButton.YesNoCancel;
             MessageBoxImage icon = MessageBoxImage.Warning;
             MessageBoxResult result;
 
-            result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
+            result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);*/
         }
     }
 }

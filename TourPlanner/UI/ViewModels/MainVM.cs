@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
+using System.Threading.Tasks;
 using Haley.MVVM;
 using Haley.Models;
 using Haley.Abstractions;
-using System.Threading.Tasks;
-using System.Windows;
 using TourPlanner.BL.Services.Logging;
 using TourPlanner.BL.Services.MapQuest;
 using TourPlanner.PL.DialogServices;
@@ -16,23 +16,17 @@ namespace TourPlanner
 {
     public class MainVM : ChangeNotifier
     {
-        public ICommand AddNewTour
-        {
-            get;
-            private set;
-        }
-        public ICommand DeleteTour
-        {
-            get;
-            private set;
-        }
+        private Tour _targetTour;
+        private ObservableCollection<Tour> _tours;
+        private bool _canAdd = true;
+        private PL.DialogServices.IDialogService _dialogService = new DialogService();
+
         public MainVM()
         {
             try
             {
                 InitCommands();
                 Log.LogInfo("Start Logging");
-                
             }
             catch (AggregateException ex)
             {
@@ -47,53 +41,28 @@ namespace TourPlanner
             }
         }
 
-        private Tour _selectedTour;
-        public Tour SelectedTour
-        {
-            get { return _selectedTour; }
-            set { _selectedTour = value; OnPropertyChanged(nameof(SelectedTour)); }
-        }
-
-        private Tour _targetTour;
         public Tour TargetTour
         {
             get { return _targetTour; }
             set { _targetTour = value; OnPropertyChanged(nameof(TargetTour)); }
         }
 
-        private ObservableCollection<Tour> _tours;
         public ObservableCollection<Tour> Tours
         {
             get { return _tours; }
             set { _tours = value; }
         }
 
-        public void AddTour()
-        {
-            Tours.Add(TargetTour); // Add it to the collection
-            TargetTour = new Tour(); // Resetting it
-        }
-
-        public ICommand CMDAdd => new DelegateCommand(AddTour);
-        /* public ICommand CMDDelete => new DelegateCommand<Tour>(DeleteTourAsync);*/
-
-        private RelayCommandAsync<Tour> _deleteTourCommand;
-        public ICommand DeleteTourCommand
-        {
-            get { return _deleteTourCommand; }
-            set { _deleteTourCommand = (RelayCommandAsync<Tour>)value; OnPropertyChanged(nameof(DeleteTourCommand)); }
-        }
-
-        private bool _canAdd = true;
         public bool CanAdd
         {
             get { return _canAdd; }
             set { _canAdd = value; OnPropertyChanged(nameof(CanAdd)); }
         }
-        public ObservableCollection<Tour> AllTours { get; private set; }
 
-        PL.DialogServices.IDialogService _dialogService = new DialogService();
-        internal async Task CreateNewTour()
+        public ICommand AddNewTour { get; private set; }
+        public ICommand DeleteTourCommand { get; private set; }
+
+        public async Task CreateNewTour()
         {
             try
             {
@@ -115,7 +84,6 @@ namespace TourPlanner
                 tour.RouteDetails = route.image;
                 Log.LogInfo("Neue Tour erstellt Name: " + tour.Name);
 
-
                 // Add the new tour to the collection
                 Tours.Add(tour);
                 Log.LogInfo("New tour created with name: " + tour.Name);
@@ -133,19 +101,16 @@ namespace TourPlanner
                 Log.LogError(ex.Message);
             }
         }
-        /*public bool CanAdd { get; internal set; } = true;*/
 
-        internal async Task DeleteTourAsync(Tour tour)
+        public async Task DeleteTourAsync(Tour tour)
         {
             try
             {
-                // Perform the deletion logic here
-                // Example:
                 if (Tours.Contains(tour))
                 {
                     // Assuming Tour has an ID property
                     // Delete the tour from the data source
-                   // await DeleteTourFromDataSource(tour);
+                    // await DeleteTourFromDataSource(tour);
 
                     // Remove the tour from the Tours collection
                     DeleteTourFromTours(tour);
@@ -169,6 +134,7 @@ namespace TourPlanner
                 MessageBox.Show(ex.Message);
             }
         }
+
         private void DeleteTourFromTours(Tour tour)
         {
             if (tour == null) return;
@@ -176,6 +142,7 @@ namespace TourPlanner
 
             Tours.Remove(tour);
         }
+
         private Task DeleteTourFromDataSource(Tour tour)
         {
             // TODO: Replace this code with your data source deletion logic
@@ -187,18 +154,17 @@ namespace TourPlanner
             // Return a Task representing the completion of the deletion operation
             return Task.CompletedTask;
         }
+
         private void InitCommands()
         {
             Tours = new ObservableCollection<Tour>();
             TargetTour = new Tour();
             AddNewTour = new AddNewTourCMD(this);
-            DeleteTourCommand = new RelayCommandAsync<Tour>(DeleteTourAsync);
-
+            DeleteTourCommand = new DeleteTourCMD(this);
 
             // Add some sample tours
             Tours.Add(new Tour(name: "Tour 1", time: 1, tour_desc: "Description 1", from: "From 1", to: "To 1", transport_type: "Bus", distance: 123, image_link: "image1", route_information: null));
             Tours.Add(new Tour(name: "Tour 2", time: 2, tour_desc: "Description 2", from: "From 2", to: "To 2", transport_type: "Car", distance: 456, image_link: "image2", route_information: null));
         }
     }
-
 }

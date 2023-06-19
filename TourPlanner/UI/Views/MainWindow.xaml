@@ -41,15 +41,18 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Button Grid.Row="1" Grid.Column="0" Content="New Tour" Click="bt_newTourDialog"/>
-        <ListView x:Name="lstView" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2" Background="#FFEDE9C5" ItemsSource="{Binding Tours}" SelectionMode="Single">
+        <ListView x:Name="lstView" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="3" Background="#FFEDE9C5" ItemsSource="{Binding Tours}" SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel>
@@ -94,16 +97,17 @@
             </Menu>
 
         </DockPanel>
-        <ListView Margin="10,10,0,13" ItemsSource="{Binding Tours}" Name="ListView1" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0" Width="194" Height="200">
+        <ListView Margin="10,10,0,13" ItemsSource="{Binding Tours}" Name="ListView1" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0" Grid.RowSpan="4" Width="210" >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Name}" />
-                        <Button Grid.Row="1" Grid.Column="0" Content="Delete Tour" Command="{Binding DeleteTourCommand}" CommandParameter="{Binding SelectedItem, ElementName=lstView}" Click="DeleteTour_Click"/>
+                        <Button Grid.Row="1" Grid.Column="0" Content="Delete Tour" Command="{Binding DataContext.DeleteTourCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
     </Grid>
 
 </Window>
