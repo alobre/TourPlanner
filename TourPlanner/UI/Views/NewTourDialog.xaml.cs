@@ -27,19 +27,23 @@ namespace TourPlanner.UI.Views
         public string Dest_AreaCode { get { return tb_dest_areacode.Text; } }
         public string Dest_City { get { return tb_dest_city.Text; } }
         public string Dest_Country { get { return tb_dest_state.Text; } }
-        public NewTourDialog()
+
+        private MainVM viewModel;
+        public NewTourDialog(MainVM mainViewModel)
         {
             InitializeComponent();
-            DataContext = new MainVM();
+            
+            viewModel = mainViewModel;
+            DataContext = viewModel;
         }
         public bool DialogResult { get; private set; }
         private void b_finish_Click(object sender, RoutedEventArgs e)
         {
             
-            if (DataContext is MainVM viewModel)
+           /* if (DataContext is MainVM viewModel)
             {
                 viewModel.AddNewTour.Execute(null);
-            }
+            }*/
             DialogResult = true;
             Close(); // Close the current dialog
         }

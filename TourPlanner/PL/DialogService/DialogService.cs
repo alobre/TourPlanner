@@ -12,9 +12,14 @@ namespace TourPlanner.PL.DialogServices
 {
     internal class DialogService : IDialogService
     {
+        private MainVM viewModel;
+        public DialogService(MainVM mainViewModel)
+        {
+            viewModel = mainViewModel; // Assign the MainVM instance to the field
+        }
         public (MapQuestRequestData start, MapQuestRequestData dest) ShowDialog(Action<string> callback)
         {
-            var dialog = new NewTourDialog();
+            var dialog = new NewTourDialog(viewModel);
             dialog.Owner = Application.Current.MainWindow;
 
             EventHandler closeEventHandler = null;

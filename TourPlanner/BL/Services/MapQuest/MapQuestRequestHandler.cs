@@ -67,7 +67,7 @@ namespace TourPlanner.BL.Services.MapQuest
             try
             {
                 WebClient client = new WebClient();
-                string URL = $"https://open.mapquestapi.com/staticmap/v5/map?key=mpUdVgf8ptUM5Bum4hKF2yKU30TlOLw4&start={start.GetString()}&end={dest.GetString()}";
+                string URL = $"https://open.mapquestapi.com/staticmap/v5/map?key=y0MJ3PFzkkliOvNfcFm49CPFMpKj65t5&start={start.GetString()}&end={dest.GetString()}";
                 Stream stream = client.OpenRead(URL);
                 Bitmap bitmap; bitmap = new Bitmap(stream);
 

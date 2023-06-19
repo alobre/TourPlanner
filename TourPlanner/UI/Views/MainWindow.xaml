@@ -52,25 +52,30 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Button Grid.Row="1" Grid.Column="0" Content="New Tour" Click="bt_newTourDialog"/>
-        <ListView x:Name="lstView" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="3" Background="#FFEDE9C5" ItemsSource="{Binding Tours}" SelectionMode="Single">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <WrapPanel>
-                        <TextBlock Text="{Binding Name}"/>
-                        <TextBlock Text=" - " Foreground="Blue"/>
-                        <TextBlock Text="{Binding Description}"/>
-                        <TextBlock Text=" - " Foreground="Blue"/>
-                        <TextBlock Text="{Binding Distance}"/>
-                        <TextBlock Text=" - " Foreground="Blue"/>
-                        <TextBlock Text="{Binding TransportType}"/>
-                        <TextBlock Text=" - " Foreground="Blue"/>
-                        <TextBlock Text="{Binding EstimatedTime}"/>
-                        <TextBlock Text=" - " Foreground="Blue"/>
-                        <TextBlock Text="{Binding RouteInformationImageUrl}"/>
-                    </WrapPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+
+        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="3" Background="#FFEDE9C5">
+            
+            <StackPanel Orientation="Vertical">
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding SelectedTour.Name}" FontWeight="Bold"/>
+            
+                    <TextBlock Text=" - " Foreground="Blue"/>
+                    <TextBlock Text="{Binding SelectedTour.Description}"/>
+            
+                    <TextBlock Text=" - " Foreground="Blue"/>
+                    <TextBlock Text="{Binding SelectedTour.Distance}"/>
+            
+                    <TextBlock Text=" - " Foreground="Blue"/>
+                    <TextBlock Text="{Binding SelectedTour.TransportType}"/>
+            
+                    <TextBlock Text=" - " Foreground="Blue"/>
+                    <TextBlock Text="{Binding SelectedTour.Time}"/>
+
+                    <TextBlock Text=" - " Foreground="Blue"/>
+            <TextBlock Text="{Binding SelectedTour.RouteImage}"/>
+        </StackPanel>
+        </Grid>
+
+
         <DockPanel Height="22" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
@@ -97,16 +102,19 @@
             </Menu>
 
         </DockPanel>
-        <ListView Margin="10,10,0,13" ItemsSource="{Binding Tours}" Name="ListView1" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0" Grid.RowSpan="4" Width="210" >
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Name}" />
-                        <Button Grid.Row="1" Grid.Column="0" Content="Delete Tour" Command="{Binding DataContext.DeleteTourCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" />
+        <ListView Margin="10,10,0,13" ItemsSource="{Binding Tours}" Name="ListView1" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0" Grid.RowSpan="4" Width="210">
+    <ListView.ItemTemplate>
+        <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Name}" />
+                <Button Grid.Row="1" Grid.Column="0" Content="Delete Tour" Command="{Binding DataContext.DeleteTourCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" />
+                        <StackPanel.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.ChangeSelectedTourCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" />
+                        </StackPanel.InputBindings>
                     </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        </DataTemplate>
+    </ListView.ItemTemplate>
+</ListView>
 
     </Grid>
 

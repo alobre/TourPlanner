@@ -11,6 +11,7 @@ using TourPlanner.BL.Services.Logging;
 using TourPlanner.BL.Services.MapQuest;
 using TourPlanner.PL.DialogServices;
 using TourPlanner.PL.Command;
+using System.Windows.Data;
 
 namespace TourPlanner
 {
@@ -18,8 +19,9 @@ namespace TourPlanner
     {
         private Tour _targetTour;
         private ObservableCollection<Tour> _tours;
+        private Tour _selectedTour;
         private bool _canAdd = true;
-        private PL.DialogServices.IDialogService _dialogService = new DialogService();
+        private DialogService _dialogService = new DialogService(null);
 
         public MainVM()
         {
@@ -41,6 +43,15 @@ namespace TourPlanner
             }
         }
 
+        public Tour SelectedTour
+        {
+            get { return _selectedTour; }
+            set
+            {
+                _selectedTour = value;
+                OnPropertyChanged(nameof(SelectedTour));
+            }
+        }
         public Tour TargetTour
         {
             get { return _targetTour; }
@@ -50,9 +61,12 @@ namespace TourPlanner
         public ObservableCollection<Tour> Tours
         {
             get { return _tours; }
-            set { _tours = value; }
+            set { _tours = value; OnPropertyChanged(nameof(Tours)); }
         }
-
+        public void ClearTours()
+        {
+            Tours.Clear();
+        }
         public bool CanAdd
         {
             get { return _canAdd; }
@@ -61,6 +75,8 @@ namespace TourPlanner
 
         public ICommand AddNewTour { get; private set; }
         public ICommand DeleteTourCommand { get; private set; }
+        public ICommand ChangeSelectedTourCommand { get; private set; }
+
 
         public async Task CreateNewTour()
         {
@@ -101,7 +117,12 @@ namespace TourPlanner
                 Log.LogError(ex.Message);
             }
         }
+        public event PropertyChangedEventHandler PropertyChanged;
 
+  /*      protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }*/
         public async Task DeleteTourAsync(Tour tour)
         {
             try
@@ -155,16 +176,43 @@ namespace TourPlanner
             return Task.CompletedTask;
         }
 
+        public async Task SetSelectedTour(Tour tour)
+        {
+            try
+            {
+                SelectedTour = tour;
+            }
+            catch (NullReferenceException n)
+            {
+                MessageBox.Show(n.Message);
+                Log.LogError(n.Message);
+            }
+            catch (AggregateException ex)
+            {
+                foreach (Exception ex2 in ex.Flatten().InnerExceptions)
+                {
+                    Log.LogError(ex2.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.LogError(ex.Message);
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void InitCommands()
         {
             Tours = new ObservableCollection<Tour>();
             TargetTour = new Tour();
             AddNewTour = new AddNewTourCMD(this);
             DeleteTourCommand = new DeleteTourCMD(this);
+            ChangeSelectedTourCommand = new ChangeSelectedTourCMD(this);
 
+            ClearTours();
+            SelectedTour = new Tour(name: "Tour 1", time: 1, tour_desc: "Description 1", from: "From 1", to: "To 1", transport_type: "Bus", distance: 123, image_link: "https://www.odtap.com/wp-content/uploads/2019/04/Route-optimization-software-odtap.jpg", route_information: null);
             // Add some sample tours
-            Tours.Add(new Tour(name: "Tour 1", time: 1, tour_desc: "Description 1", from: "From 1", to: "To 1", transport_type: "Bus", distance: 123, image_link: "image1", route_information: null));
-            Tours.Add(new Tour(name: "Tour 2", time: 2, tour_desc: "Description 2", from: "From 2", to: "To 2", transport_type: "Car", distance: 456, image_link: "image2", route_information: null));
+            Tours.Add(new Tour(name: "Tour 1", time: 1, tour_desc: "Description 1", from: "From 1", to: "To 1", transport_type: "Bus", distance: 123, image_link: "https://www.odtap.com/wp-content/uploads/2019/04/Route-optimization-software-odtap.jpg", route_information: null));
+            Tours.Add(new Tour(name: "Tour 2", time: 2, tour_desc: "Description 2", from: "From 2", to: "To 2", transport_type: "Car", distance: 456, image_link: "https://www.odtap.com/wp-content/uploads/2019/04/Route-optimization-software-odtap.jpg", route_information: null));
         }
     }
 }

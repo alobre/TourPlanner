@@ -21,15 +21,18 @@ namespace TourPlanner
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainVM viewModel;
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainVM(); //Connecting the view with viewmodel
+            viewModel = new MainVM(); // Create an instance of MainVM
+            DataContext = viewModel;
+            /*DataContext = new MainVM(); //Connecting the view with viewmodel*/
 
         }
         private void OpenTourDialog()
         {
-            NewTourDialog newTourDialog = new NewTourDialog();
+            NewTourDialog newTourDialog = new NewTourDialog(viewModel);
             newTourDialog.Owner = this; // Set the owner of the dialog to the MainWindow
             newTourDialog.ShowDialog();
         }
