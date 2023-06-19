@@ -7,6 +7,7 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <UseWindowsForms>False</UseWindowsForms>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System.Security" />

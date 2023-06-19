@@ -56,23 +56,33 @@
         <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="3" Background="#FFEDE9C5">
             
             <StackPanel Orientation="Vertical">
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding SelectedTour.Name}" FontWeight="Bold"/>
-            
-                    <TextBlock Text=" - " Foreground="Blue"/>
-                    <TextBlock Text="{Binding SelectedTour.Description}"/>
-            
-                    <TextBlock Text=" - " Foreground="Blue"/>
-                    <TextBlock Text="{Binding SelectedTour.Distance}"/>
-            
-                    <TextBlock Text=" - " Foreground="Blue"/>
-                    <TextBlock Text="{Binding SelectedTour.TransportType}"/>
-            
-                    <TextBlock Text=" - " Foreground="Blue"/>
-                    <TextBlock Text="{Binding SelectedTour.Time}"/>
+                <Label Content="Name:" FontWeight="Bold"/>
+                <TextBlock Grid.Row="1" Text="{Binding SelectedTour.Name}"/>
 
-                    <TextBlock Text=" - " Foreground="Blue"/>
-            <TextBlock Text="{Binding SelectedTour.RouteImage}"/>
-        </StackPanel>
+                <Label Content="From:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding SelectedTour.From}"/>
+
+                <Label Content="To:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding SelectedTour.To}"/>
+
+                <Label Content="Description:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding SelectedTour.Description}"/>
+
+                <Label Content="Distance:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding SelectedTour.Distance}"/>
+
+                <Label Content="Transport Type:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding SelectedTour.TransportType}"/>
+
+                <Label Content="Time:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding SelectedTour.Time}"/>
+
+                <Label Content="Route Image:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding SelectedTour.RouteImage}"/>
+
+                <Label Content="Route Details:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding SelectedTour.RouteDetails}"/>
+            </StackPanel>
         </Grid>
 
 

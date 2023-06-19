@@ -12,6 +12,7 @@ using TourPlanner.BL.Services.MapQuest;
 using TourPlanner.PL.DialogServices;
 using TourPlanner.PL.Command;
 using System.Windows.Data;
+using TourPlanner.BL.Models;
 
 namespace TourPlanner
 {
@@ -96,7 +97,7 @@ namespace TourPlanner
                 tour.From = $"{result.start.Address}";
                 tour.To = result.dest.Address;
                 tour.RouteImage = route.URL;
-                tour.Name = $"{result.start.Address}TO{result.dest.Address}";
+                tour.Name = $"{result.start.Address} TO {result.dest.Address}";
                 tour.RouteDetails = route.image;
                 Log.LogInfo("Neue Tour erstellt Name: " + tour.Name);
 

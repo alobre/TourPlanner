@@ -12,7 +12,7 @@ using System.Net;
 using System.Windows.Media.Imaging;
 using JsonIgnoreAttribute = Newtonsoft.Json.JsonIgnoreAttribute;
 
-namespace TourPlanner
+namespace TourPlanner.BL.Models
 {
     public class Tour : ChangeNotifier
     {

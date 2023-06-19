@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Input;
+using TourPlanner.BL.Models;
 
 namespace TourPlanner.PL.Command
 {
