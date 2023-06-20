@@ -13,6 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.EntityFrameworkCore;
+using TourPlanner.DL.DB;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TourPlanner
 {
@@ -22,6 +25,9 @@ namespace TourPlanner
     public partial class MainWindow : Window
     {
         private MainVM viewModel;
+        private readonly TourPlannerDbContext _context = new TourPlannerDbContext();
+        private CollectionViewSource categoryViewSource;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -52,6 +58,20 @@ namespace TourPlanner
             MessageBoxResult result;
 
             result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);*/
+        }
+
+        private void WndwMain_Loaded(object sender, RoutedEventArgs e)
+        {
+            // this is for demo purposes only, to make it easier
+            // to get up and running
+            _context.Database.EnsureCreated();
+
+            // load the entities into EF Core
+            _context.TourLogs.Load();
+
+            // bind to the source
+            categoryViewSource.Source =
+                _context.TourLogs.Local.ToObservableCollection();
         }
     }
 }

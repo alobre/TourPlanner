@@ -20,6 +20,7 @@ namespace TourPlanner.BL.Models
     {
         public Tour(string name, string tour_desc, string from, string to, string transport_type, float distance, int time, BitmapImage route_information, string image_link, ObservableCollection<TourLog> tourLogs = null)
         {
+            Tour_id = mod((DateTime.Now.ToString("MM/dd/yyyy h:mm tt")+name).GetHashCode(), 9999);
             Name = name;
             Description = tour_desc;
             From = from;
@@ -30,6 +31,17 @@ namespace TourPlanner.BL.Models
             RouteDetails = route_information;
             RouteImage = image_link;
             TourLogs = tourLogs != null ? new ObservableCollection<TourLog>(tourLogs) : new ObservableCollection<TourLog>();
+        }
+        int mod(int x, int m)
+        {
+            int r = x % m;
+            return r < 0 ? r + m : r;
+        }
+        private int _tour_id;
+        public int Tour_id
+        {
+            get { return _tour_id; }
+            set { _tour_id = value; OnPropertyChanged(nameof(Tour_id)); }
         }
         private string _name;
         public string Name

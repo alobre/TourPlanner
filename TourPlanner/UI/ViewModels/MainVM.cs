@@ -16,6 +16,7 @@ using TourPlanner.BL.Models;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using TourPlanner.UI.ViewModels;
+using TourPlanner.DL.DB;
 
 namespace TourPlanner
 {
@@ -26,6 +27,7 @@ namespace TourPlanner
         private Tour _selectedTour;
         private bool _canAdd = true;
         private DialogService _dialogService = new DialogService(null);
+        private TourPlannerDbContext _context;
 
         public MainVM()
         {
@@ -113,6 +115,7 @@ namespace TourPlanner
                 tour.RouteImage = route.URL;
                 tour.Name = $"{result.start.Address} TO {result.dest.Address}";
                 tour.RouteDetails = route.image;
+                tour.TourLogs = new ObservableCollection<TourLog>(new List<TourLog>());
                 Log.LogInfo("Neue Tour erstellt Name: " + tour.Name);
 
                 // Add the new tour to the collection
@@ -218,11 +221,12 @@ namespace TourPlanner
             try
             {
 
-                TourLog tourLog = new TourLog(comment: TourLogViewModel.Comment, difficulty: TourLogViewModel.Difficulty, rating: TourLogViewModel.Rating, dateTime: TourLogViewModel.Date, totalTime: int.Parse(TourLogViewModel.Time));
+                
                 foreach (Tour tour in Tours)
                 {
                     if(tour.Equals(SelectedTour))
-                    { 
+                    {
+                        TourLog tourLog = new TourLog(tour_id: SelectedTour.Tour_id, comment: TourLogViewModel.Comment, difficulty: TourLogViewModel.Difficulty, rating: TourLogViewModel.Rating, dateTime: TourLogViewModel.Date, totalTime: int.Parse(TourLogViewModel.Time));
                         tour.TourLogs.Add(tourLog);
                         // Also add in DB
                     }
@@ -256,6 +260,7 @@ namespace TourPlanner
             ChangeSelectedTourCommand = new ChangeSelectedTourCMD(this);
             AddTourLogCommand = new AddTourLogCMD(this);
             TourLogViewModel = new TourLogVM();
+            _context = new TourPlannerDbContext();
 
             ClearTours();
            /* SelectedTour = new Tour(name: "Tour 1", time: 1, tour_desc: "Description 1", from: "From 1", to: "To 1", transport_type: "Bus", distance: 123, image_link: "https://www.odtap.com/wp-content/uploads/2019/04/Route-optimization-software-odtap.jpg", route_information: null);
@@ -273,7 +278,7 @@ namespace TourPlanner
             route_information: null,
              tourLogs: new ObservableCollection<TourLog>(new List<TourLog>()
             {
-                new TourLog(comment: "sehr schön", difficulty: "easy", rating: 5, dateTime: DateTime.Now, totalTime: 10)
+                new TourLog(tour_id: 1234, comment: "sehr schön", difficulty: "easy", rating: 5, dateTime: DateTime.Now, totalTime: 10)
             })
             ));
             Tours.Add(new Tour(name: "Tour 2", time: 2, tour_desc: "Description 2", from: "From 2", to: "To 2", transport_type: "Car", distance: 456, image_link: "https://www.odtap.com/wp-content/uploads/2019/04/Route-optimization-software-odtap.jpg", route_information: null));

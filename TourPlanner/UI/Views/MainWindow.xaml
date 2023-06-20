@@ -3,13 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:media="clr-namespace:System.Windows.Media.Imaging;assembly=PresentationCore"
         xmlns:local="clr-namespace:TourPlanner"
         x:Name="WndwMain"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1200">
+        Title="MainWindow" Height="800" Width="1200" Loaded="WndwMain_Loaded">
 
     <Window.Resources>
         <ResourceDictionary>
+        <CollectionViewSource x:Key="categoryViewSource"/>
+        <CollectionViewSource x:Key="categoryTourLogsViewSource" 
+                              Source="{Binding TourLogs, Source={StaticResource categoryViewSource}}"/>
+        
             <Style TargetType="{x:Type ItemsControl}">
                 <Setter Property="Margin" Value="5"/>
                 <Setter Property="ItemsPanel">
@@ -85,6 +90,8 @@
                 <TextBlock Text="{Binding SelectedTour.RouteDetails}"/>
             </StackPanel>
         </Grid>
+        <Image Source="{Binding SelectedTour.RouteDetails}" Grid.Column="4" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+
 
 
         <DockPanel Height="22" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6">
@@ -126,7 +133,7 @@
         </DataTemplate>
     </ListView.ItemTemplate>
 </ListView>
-        <ListView Margin="10,10,0,13" ItemsSource="{Binding SelectedTour.TourLogs}" Name="TourLogs" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="4" Grid.RowSpan="4" Grid.ColumnSpan="2" Width="360">
+        <ListView Margin="10,10,0,13" ItemsSource="{Binding SelectedTour.TourLogs}" Name="TourLogs" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="4" Grid.RowSpan="3" Grid.ColumnSpan="2" Width="360">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
@@ -169,6 +176,18 @@
 
             <Button Command="{Binding AddTourLogCommand}" Grid.Column="1" Grid.Row="5" Margin="10" Background="#FFCAF4FF" >Add TourLog</Button>
         </Grid>
+        <DataGrid x:Name="categoryDataGrid" AutoGenerateColumns="False" 
+          EnableRowVirtualization="True" 
+          ItemsSource="{Binding Source={StaticResource categoryTourLogsViewSource}}" 
+          Margin="13,13,43,229" RowDetailsVisibilityMode="VisibleWhenSelected">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding comment}"
+                            Header="name" Width="SizeToHeader"
+                            IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding tour_id}" Header="tour_id" 
+                            Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
 
     </Grid>
 

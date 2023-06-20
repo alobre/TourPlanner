@@ -1,15 +1,38 @@
 ﻿using Haley.Models;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 public class TourLog : ChangeNotifier
 {
-    public TourLog(string comment, string difficulty, int rating, DateTime dateTime, int totalTime) 
-    { 
+    public TourLog(int tour_id, string comment, string difficulty, int rating, DateTime dateTime, int totalTime) 
+    {
+        Tour_id = tour_id;
+        TourLog_Id = mod((tour_id + DateTime.Now.ToString("MM/dd/yyyy h:mm tt").GetHashCode()), 9999);
         Comment = comment;
         Difficulty = difficulty;
         Rating = rating;
         DateTime = dateTime;
         TotalTime = totalTime;
+    }
+    int mod(int x, int m)
+    {
+        int r = x % m;
+        return r < 0 ? r + m : r;
+    }
+    private int _tour_id;
+    public int Tour_id
+    {
+        get { return _tour_id; }
+        set { _tour_id = value; OnPropertyChanged(nameof(Tour_id)); }
+    }
+    
+    private int _tourLog_id;
+    [Key]
+    public int TourLog_Id
+    {
+        get { return _tourLog_id; }
+        set { _tourLog_id = value; OnPropertyChanged(nameof(TourLog_Id)); }
     }
     private DateTime _dateTime;
     public DateTime DateTime
