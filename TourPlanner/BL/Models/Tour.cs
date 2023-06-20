@@ -11,12 +11,14 @@ using Newtonsoft.Json;
 using System.Net;
 using System.Windows.Media.Imaging;
 using JsonIgnoreAttribute = Newtonsoft.Json.JsonIgnoreAttribute;
+using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
 
 namespace TourPlanner.BL.Models
 {
     public class Tour : ChangeNotifier
     {
-        public Tour(string name, string tour_desc, string from, string to, string transport_type, float distance, int time, BitmapImage route_information, string image_link)
+        public Tour(string name, string tour_desc, string from, string to, string transport_type, float distance, int time, BitmapImage route_information, string image_link, ObservableCollection<TourLog> tourLogs = null)
         {
             Name = name;
             Description = tour_desc;
@@ -27,6 +29,7 @@ namespace TourPlanner.BL.Models
             Time = time;
             RouteDetails = route_information;
             RouteImage = image_link;
+            TourLogs = tourLogs != null ? new ObservableCollection<TourLog>(tourLogs) : new ObservableCollection<TourLog>();
         }
         private string _name;
         public string Name
@@ -98,45 +101,14 @@ namespace TourPlanner.BL.Models
         {
             _logs = new List<TourLog>();
         }
-    }
-
-    public class TourLog : ChangeNotifier
-    {
-        private DateTime _dateTime;
-        public DateTime DateTime
+        private ObservableCollection<TourLog> _tourLogs;
+        public ObservableCollection<TourLog> TourLogs
         {
-            get { return _dateTime; }
-            set { _dateTime = value; OnPropertyChanged(nameof(DateTime)); }
-        }
-
-        private string _comment;
-        public string Comment
-        {
-            get { return _comment; }
-            set { _comment = value; OnPropertyChanged(nameof(Comment)); }
-        }
-
-        private string _difficulty;
-        public string Difficulty
-        {
-            get { return _difficulty; }
-            set { _difficulty = value; OnPropertyChanged(nameof(Difficulty)); }
-        }
-
-        private TimeSpan _totalTime;
-        public TimeSpan TotalTime
-        {
-            get { return _totalTime; }
-            set { _totalTime = value; OnPropertyChanged(nameof(TotalTime)); }
-        }
-
-        private int _rating;
-        public int Rating
-        {
-            get { return _rating; }
-            set { _rating = value; OnPropertyChanged(nameof(Rating)); }
+            get { return _tourLogs; }
+            set { _tourLogs = value; OnPropertyChanged(nameof(TourLogs)); }
         }
     }
+
 
     public class TourManager
     {

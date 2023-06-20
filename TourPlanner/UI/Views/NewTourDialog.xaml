@@ -26,6 +26,6 @@
         <TextBox x:Name="tb_dest_areacode" Text="1120" HorizontalAlignment="Left" Margin="390,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="tb_dest_city" Text="Vienna" HorizontalAlignment="Left" Margin="390,107,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <TextBox x:Name="tb_dest_state" Text="Austria" HorizontalAlignment="Left" Margin="390,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="b_finish" Content="Confirm" HorizontalAlignment="Left" Margin="80,182,0,0" VerticalAlignment="Top" Width="430" Click="b_finish_Click" Command="{Binding AddNewTour}"  CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+        <Button x:Name="b_finish" Content="Confirm" HorizontalAlignment="Left" Margin="80,182,0,0" VerticalAlignment="Top" Width="430" Click="b_finish_Click" Command="{Binding AddNewTourCommand}"  CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
     </Grid>
 </Window>

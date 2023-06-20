@@ -42,6 +42,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -53,7 +54,7 @@
         </Grid.RowDefinitions>
         <Button Grid.Row="1" Grid.Column="0" Content="New Tour" Click="bt_newTourDialog"/>
 
-        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="3" Background="#FFEDE9C5">
+        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="3" Background="#FFEDE9C5">
             
             <StackPanel Orientation="Vertical">
                 <Label Content="Name:" FontWeight="Bold"/>
@@ -112,7 +113,7 @@
             </Menu>
 
         </DockPanel>
-        <ListView Margin="10,10,0,13" ItemsSource="{Binding Tours}" Name="ListView1" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0" Grid.RowSpan="4" Width="210">
+        <ListView Margin="10,10,0,13" ItemsSource="{Binding Tours}" Name="ListView1" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0" Grid.RowSpan="4" Width="180">
     <ListView.ItemTemplate>
         <DataTemplate>
             <StackPanel Orientation="Horizontal">
@@ -125,6 +126,49 @@
         </DataTemplate>
     </ListView.ItemTemplate>
 </ListView>
+        <ListView Margin="10,10,0,13" ItemsSource="{Binding SelectedTour.TourLogs}" Name="TourLogs" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="4" Grid.RowSpan="4" Grid.ColumnSpan="2" Width="360">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Comment}" />
+                        <TextBlock Text="{Binding Difficulty}" />
+                        <TextBlock Text="{Binding Rating}" />
+                        <TextBlock Text="{Binding DateTime}" />
+                        <TextBlock Text="{Binding TotalTime}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Grid Background="AliceBlue" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="4" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center">Comment</Label>
+            <Label Grid.Column="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center">Difficulty</Label>
+            <Label Grid.Column="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center">Rating</Label>
+            <Label Grid.Column="0" Grid.Row="3" HorizontalContentAlignment="Right" VerticalContentAlignment="Center">Date</Label>
+            <Label Grid.Column="0" Grid.Row="4" HorizontalContentAlignment="Right" VerticalContentAlignment="Center">Time (min)</Label>
+
+            <TextBox Grid.Column="1" Grid.Row="0" Margin="10" Text="{Binding TourLogViewModel.Comment}"/>
+            <TextBox Grid.Column="1" Grid.Row="1" Margin="10" Text="{Binding TourLogViewModel.Difficulty}"/>
+            <Slider Minimum="0" Maximum="4" TickFrequency="1" Grid.Column="1" Grid.Row="2" IsSnapToTickEnabled="True" VerticalAlignment="Center" Margin="10" Value="{Binding TourLogViewModel.Rating}"/>
+            <DatePicker Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" Margin="10" SelectedDate="{Binding TourLogViewModel.Date}"/>
+            <TextBox Grid.Column="1" Grid.Row="4" Margin="10" Text="{Binding TourLogViewModel.Time}"/>
+
+
+
+            <Button Command="{Binding AddTourLogCommand}" Grid.Column="1" Grid.Row="5" Margin="10" Background="#FFCAF4FF" >Add TourLog</Button>
+        </Grid>
 
     </Grid>
 
