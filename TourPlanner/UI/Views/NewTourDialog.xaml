@@ -3,9 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TourPlanner.UI.Views"
+        xmlns:local="clr-namespace:TourPlanner.UI.Views" xmlns:local1="clr-namespace:TourPlanner.UI.ViewModels"
         mc:Ignorable="d"
         Title="NewTour" Width="600" Height="250" MaxHeight="250" MaxWidth="600" MinHeight="250" MinWidth="600">
+    <Window.Resources>
+        <local1:NewTourDialogVM x:Key="DialogViewModel" />
+    </Window.Resources>
 
     <Grid>
         <Label Content="Start" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
@@ -18,14 +21,16 @@
         <Label Content="Area Code" HorizontalAlignment="Left" Margin="310,72,0,0" VerticalAlignment="Top"/>
         <Label Content="City" HorizontalAlignment="Left" Margin="310,103,0,0" VerticalAlignment="Top"/>
         <Label Content="Country" HorizontalAlignment="Left" Margin="310,134,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="tb_start_address" Text="Schumanngasse 77" HorizontalAlignment="Left" Margin="80,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="tb_start_areacode" Text="1170" HorizontalAlignment="Left" Margin="80,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="tb_start_city" Text="Vienna" HorizontalAlignment="Left" Margin="80,107,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="tb_start_state"  Text="Austria" HorizontalAlignment="Left" Margin="80,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="tb_dest_address" Text="Hetzendorferstraße 163" HorizontalAlignment="Left" Margin="390,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="tb_dest_areacode" Text="1120" HorizontalAlignment="Left" Margin="390,76,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="tb_dest_city" Text="Vienna" HorizontalAlignment="Left" Margin="390,107,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="tb_dest_state" Text="Austria" HorizontalAlignment="Left" Margin="390,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="b_finish" Content="Confirm" HorizontalAlignment="Left" Margin="80,182,0,0" VerticalAlignment="Top" Width="430" Click="b_finish_Click" Command="{Binding AddNewTourCommand}"  CommandParameter="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+        <TextBox x:Name="tb_start_address" Text="{Binding Start_Address, Mode=TwoWay}" Margin="80,45,0,0" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"/>
+        <TextBox x:Name="tb_start_areacode" Text="{Binding Start_AreaCode, Mode=TwoWay}" Margin="80,76,0,0" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"/>
+        <TextBox x:Name="tb_start_city" Text="{Binding Start_City, Mode=TwoWay}" Margin="80,107,0,0" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"/>
+        <TextBox x:Name="tb_start_state" Text="{Binding Start_Country, Mode=TwoWay}" Margin="80,138,0,0" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"/>
+        <TextBox x:Name="tb_dest_address" Text="{Binding Dest_Address, Mode=TwoWay}" Margin="390,45,0,0" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"/>
+        <TextBox x:Name="tb_dest_areacode" Text="{Binding Dest_AreaCode, Mode=TwoWay}" Margin="390,76,0,0" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"/>
+        <TextBox x:Name="tb_dest_city" Text="{Binding Dest_City, Mode=TwoWay}" Margin="390,107,0,0" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"/>
+        <TextBox x:Name="tb_dest_state" Text="{Binding Dest_Country, Mode=TwoWay}" Margin="390,138,0,0" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"/>
+        <Button x:Name="b_finish" Content="Confirm" HorizontalAlignment="Left" Margin="80,182,0,0" VerticalAlignment="Top" Width="430" Click="b_finish_Click" 
+            Command="{Binding AddNewTourCommand}"
+        CommandParameter="{StaticResource DialogViewModel}" />
     </Grid>
 </Window>

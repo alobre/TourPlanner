@@ -1,49 +1,93 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using TourPlanner.UI.ViewModels;
 
 namespace TourPlanner.UI.Views
 {
-    /// <summary>
-    /// Interaktionslogik für NewTour.xaml
-    /// </summary>
     public partial class NewTourDialog : Window
     {
-        public string Start_Address { get { return tb_start_address.Text; } }
-        public string Start_AreaCode { get { return tb_start_areacode.Text; } }
-        public string Start_City { get { return tb_start_city.Text; } }
-        public string Start_Country { get { return tb_start_state.Text; } }
-        public string Dest_Address { get { return tb_dest_address.Text; } }
-        public string Dest_AreaCode { get { return tb_dest_areacode.Text; } }
-        public string Dest_City { get { return tb_dest_city.Text; } }
-        public string Dest_Country { get { return tb_dest_state.Text; } }
+        private MainVM mainViewModel;
+        private NewTourDialogVM dViewModel;
 
-        private MainVM viewModel;
-        public NewTourDialog(MainVM mainViewModel)
+        public string Start_Address
+        {
+            get { return tb_start_address.Text; }
+            set { tb_start_address.Text = value; }
+        }
+
+        public string Start_AreaCode
+        {
+            get { return tb_start_areacode.Text; }
+            set { tb_start_areacode.Text = value; }
+        }
+
+        public string Start_City
+        {
+            get { return tb_start_city.Text; }
+            set { tb_start_city.Text = value; }
+        }
+
+        public string Start_Country
+        {
+            get { return tb_start_state.Text; }
+            set { tb_start_state.Text = value; }
+        }
+
+        public string Dest_Address
+        {
+            get { return tb_dest_address.Text; }
+            set { tb_dest_address.Text = value; }
+        }
+
+        public string Dest_AreaCode
+        {
+            get { return tb_dest_areacode.Text; }
+            set { tb_dest_areacode.Text = value; }
+        }
+
+        public string Dest_City
+        {
+            get { return tb_dest_city.Text; }
+            set { tb_dest_city.Text = value; }
+        }
+
+        public string Dest_Country
+        {
+            get { return tb_dest_state.Text; }
+            set { tb_dest_state.Text = value; }
+        }
+
+        public NewTourDialog(MainVM mainViewModel, NewTourDialogVM dialogViewModel)
         {
             InitializeComponent();
-            
-            viewModel = mainViewModel;
-            DataContext = viewModel;
+
+            this.mainViewModel = mainViewModel;
+            dViewModel = dialogViewModel;
+            DataContext = dViewModel;
+
+            // Set initial values
+            if (DataContext != null)
+            {
+                dViewModel.Start_Address = "Schumanngasse 77";
+                dViewModel.Start_AreaCode = "1170";
+                dViewModel.Start_City = "Vienna";
+                dViewModel.Start_Country = "Austria";
+                dViewModel.Dest_Address = "Hetzendorferstraße 163";
+                dViewModel.Dest_AreaCode = "1120";
+                dViewModel.Dest_City = "Vienna";
+                dViewModel.Dest_Country = "Austria";
+            }
         }
+
         public bool DialogResult { get; private set; }
+
         private void b_finish_Click(object sender, RoutedEventArgs e)
         {
-            
-           /* if (DataContext is MainVM viewModel)
+            if (mainViewModel != null && mainViewModel.AddNewTourCommand.CanExecute(null))
             {
-                viewModel.AddNewTour.Execute(null);
-            }*/
+                mainViewModel.AddNewTourCommand.Execute(null);
+            }
             DialogResult = true;
             Close(); // Close the current dialog
         }

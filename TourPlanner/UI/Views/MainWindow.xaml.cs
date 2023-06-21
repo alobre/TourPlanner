@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using Microsoft.EntityFrameworkCore;
 using TourPlanner.DL.DB;
 using System.ComponentModel.DataAnnotations.Schema;
+using TourPlanner.UI.ViewModels;
 
 namespace TourPlanner
 {
@@ -25,6 +26,7 @@ namespace TourPlanner
     public partial class MainWindow : Window
     {
         private MainVM viewModel;
+        NewTourDialogVM dialogViewModel = new NewTourDialogVM();
         /*private readonly TourPlannerDbContext _context = new TourPlannerDbContext();*/
         private TourPlannerDbContext _context = new TourPlannerDbContext();
         private CollectionViewSource ToursViewSource;
@@ -33,8 +35,10 @@ namespace TourPlanner
         public MainWindow()
         {
             InitializeComponent();
+
             ViewSource = (CollectionViewSource)FindResource(nameof(ViewSource));
             ToursViewSource = (CollectionViewSource)FindResource(nameof(ToursViewSource));
+
             viewModel = new MainVM(); // Create an instance of MainVM
             DataContext = viewModel;
             /*DataContext = new MainVM(); //Connecting the view with viewmodel*/
@@ -42,7 +46,7 @@ namespace TourPlanner
         }
         private void OpenTourDialog()
         {
-            NewTourDialog newTourDialog = new NewTourDialog(viewModel);
+            NewTourDialog newTourDialog = new NewTourDialog(viewModel, dialogViewModel);
             newTourDialog.Owner = this; // Set the owner of the dialog to the MainWindow
             newTourDialog.ShowDialog();
         }

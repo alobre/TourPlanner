@@ -58,7 +58,9 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button Grid.Row="1" Grid.Column="0" Content="New Tour" Click="bt_newTourDialog"/>
+        <Button Grid.Row="1" Grid.Column="0" Content="New Tour" 
+                Command="{Binding AddNewTourCommand}"/>
+
 
         <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="3" Background="#FFEDE9C5">
             
@@ -120,18 +122,18 @@
 
         </DockPanel>
         <ListView Margin="10,10,0,13" ItemsSource="{Binding Tours}" Name="ListView1" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0" Grid.RowSpan="4" Width="180">
-    <ListView.ItemTemplate>
-        <DataTemplate>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Name}" />
-                <Button Grid.Row="1" Grid.Column="0" Content="Delete Tour" Command="{Binding DataContext.DeleteTourCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" />
-                        <StackPanel.InputBindings>
-                            <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.ChangeSelectedTourCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" />
-                        </StackPanel.InputBindings>
-                    </StackPanel>
-        </DataTemplate>
-    </ListView.ItemTemplate>
-</ListView>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" />
+                        <Button Grid.Row="1" Grid.Column="0" Content="Delete Tour" Command="{Binding DataContext.DeleteTourCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" />
+                                <StackPanel.InputBindings>
+                                    <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.ChangeSelectedTourCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}" />
+                                </StackPanel.InputBindings>
+                            </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
         <!--<ListView Margin="10,10,0,13" ItemsSource="{Binding SelectedTour.TourLogs}" Name="TourLogs" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="4" Grid.RowSpan="3" Grid.ColumnSpan="2" Width="360">
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -177,13 +179,13 @@
             <Button Command="{Binding AddTourLogCommand}" Grid.Column="1" Grid.Row="5" Margin="10" Background="#FFCAF4FF" >Add TourLog</Button>
         </Grid>
 
-        <ListView Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="3"  ItemsSource="{Binding Source={StaticResource ViewSource}}">
+        <ListView Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="3"  ItemsSource="{Binding SelectedTour.TourLogs}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{Binding Tour_id}" />
-                        <TextBlock Text="{Binding Tour_id1}" />
-                        <TextBlock Text="{Binding Tour_id2}" />
+                        <!--<TextBlock Text="{Binding Tour_id1}" />
+                        <TextBlock Text="{Binding Tour_id2}" />-->
                         <TextBlock Text="{Binding Comment}" />
                         <TextBlock Text="{Binding Difficulty}" />
                         <TextBlock Text="{Binding Rating}" />

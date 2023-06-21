@@ -73,3 +73,4 @@ C:\Users\wsowy\Documents\FH\S04\SWEN\TourPlanner-main\TourPlanner\bin\Debug\net7
 C:\Users\wsowy\Documents\FH\S04\SWEN\TourPlanner-main\TourPlanner\bin\Debug\net7.0-windows\Npgsql.EntityFrameworkCore.PostgreSQL.dll
 C:\Users\wsowy\Documents\FH\S04\SWEN\TourPlanner-main\TourPlanner\bin\Debug\net7.0-windows\Castle.Core.dll
 C:\Users\wsowy\Documents\FH\S04\SWEN\TourPlanner-main\TourPlanner\bin\Debug\net7.0-windows\Microsoft.EntityFrameworkCore.Proxies.dll
+C:\Users\wsowy\Documents\FH\S04\SWEN\TourPlanner-main\TourPlanner\obj\Debug\net7.0-windows\GeneratedInternalTypeHelper.g.cs

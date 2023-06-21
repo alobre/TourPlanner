@@ -17,6 +17,8 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using TourPlanner.UI.ViewModels;
 using TourPlanner.DL.DB;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace TourPlanner
 {
@@ -27,7 +29,8 @@ namespace TourPlanner
         private Tour _selectedTour;
         private bool _canAdd = true;
         private DialogService _dialogService = new DialogService(null);
-        private TourPlannerDbContext _context;
+
+        private TourPlannerDbContext _context = new TourPlannerDbContext();
 
         public MainVM()
         {
@@ -94,7 +97,6 @@ namespace TourPlanner
         public ICommand ChangeSelectedTourCommand { get; private set; }
         public ICommand AddTourLogCommand { get; private set; }
 
-
         public async Task CreateNewTour()
         {
             try
@@ -105,20 +107,29 @@ namespace TourPlanner
                 });
 
                 var route = await MapQuestRequestHandler.GetRouteAsync(result.start, result.dest);
-                Tour tour = new Tour();
-                tour.Distance = route.route.route.distance;
-                tour.Time = route.route.route.time;
-                tour.Description = $"From {result.start.Address} {result.start.AreaCode} {result.start.City} to {result.dest.Address} {result.dest.AreaCode} {result.dest.City}";
-                tour.TransportType = route.route.route.options.routeType;
-                tour.From = $"{result.start.Address}";
-                tour.To = result.dest.Address;
-                tour.RouteImage = route.URL;
-                tour.Name = $"{result.start.Address} TO {result.dest.Address}";
-                tour.TourLogs = new ObservableCollection<TourLog>(new List<TourLog>());
+
+                var Distance = route.route.route.distance;
+                var Time = route.route.route.time;
+                var Description = $"From {result.start.Address} to {result.dest.Address}";
+                var TransportType = route.route.route.options.routeType;
+                var From = $"{result.start.Address}";
+                var To = result.dest.Address;
+                var RouteImage = route.URL;
+                var Name = $"{result.start.Address} TO {result.dest.Address}";
+                var TourLogs = new ObservableCollection<TourLog>(new List<TourLog>());
+                
+                Tour tour = new Tour(name: Name, tour_desc: Description, from: From, to: To, transport_type: TransportType, image_link: RouteImage, time: Time, distance: Distance, tourLogs: TourLogs);
+                
                 Log.LogInfo("Neue Tour erstellt Name: " + tour.Name);
 
                 // Add the new tour to the collection
-                Tours.Add(tour);
+                if(tour != null)
+                {
+                    Tours.Add(tour);
+                    AddTourToDatabase(tour);
+                    _context.Tours.Load();
+                }
+                
                 Log.LogInfo("New tour created with name: " + tour.Name);
             }
             catch (AggregateException ex)
@@ -135,7 +146,13 @@ namespace TourPlanner
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;
-
+        public async Task UpdateTours()
+        {
+            using (var context = new TourPlannerDbContext())
+            {
+                Tours = new ObservableCollection<Tour>(context.Tours.ToList());
+            }
+        }
         public async Task DeleteTourAsync(Tour tour)
         {
             try
@@ -176,19 +193,21 @@ namespace TourPlanner
 
             if (tour == SelectedTour) SelectedTour = null;
 
+            DeleteTourFromDataSource(tour);
             Tours.Remove(tour);
         }
 
-        private Task DeleteTourFromDataSource(Tour tour)
+        private void DeleteTourFromDataSource(Tour tour)
         {
-            // TODO: Replace this code with your data source deletion logic
-
-            // For example, if you are using a database:
-            // 1. Establish a connection to the database
-            // 2. Execute a DELETE query to remove the tour with the corresponding ID
-
-            // Return a Task representing the completion of the deletion operation
-            return Task.CompletedTask;
+            using (var context = new TourPlannerDbContext())
+            {
+                var tourToDelete = context.Tours.FirstOrDefault(t => t.Tour_id == tour.Tour_id);
+                if (tourToDelete != null)
+                {
+                    context.Tours.Remove(tourToDelete);
+                    context.SaveChanges();
+                }
+            }
         }
 
         public async Task SetSelectedTour(Tour tour)
@@ -196,6 +215,11 @@ namespace TourPlanner
             try
             {
                 SelectedTour = tour;
+                using (var context = new TourPlannerDbContext())
+                {
+                    SelectedTour.TourLogs = new ObservableCollection<TourLog>(context.TourLogs.Where(log => log.Tour_id == SelectedTour.Tour_id).ToList());
+                }
+
             }
             catch (NullReferenceException n)
             {
@@ -219,16 +243,16 @@ namespace TourPlanner
         {
             try
             {
-
-                
                 foreach (Tour tour in Tours)
                 {
                     if(tour.Equals(SelectedTour))
                     {
-                            TourLog tourLog = new TourLog(tour_id: SelectedTour.Tour_id, comment: TourLogViewModel.Comment, difficulty: TourLogViewModel.Difficulty, rating: TourLogViewModel.Rating, dateTime: TourLogViewModel.Date, totalTime: int.Parse(TourLogViewModel.Time));
+                            TourLog tourLog = new TourLog(tour_id: SelectedTour.Tour_id, comment: TourLogViewModel.Comment, difficulty: TourLogViewModel.Difficulty, rating: TourLogViewModel.Rating + 1, dateTime: TourLogViewModel.Date, totalTime: int.Parse(TourLogViewModel.Time));
                             tour.TourLogs.Add(tourLog);
+                            SelectedTour = tour;
 
                             AddTourLogToDatabase(tourLog);
+                            
                     }
                 }
 
@@ -249,6 +273,30 @@ namespace TourPlanner
             {
                 Log.LogError(ex.Message);
                 MessageBox.Show(ex.Message);
+            }
+        }
+        private void AddTourToDatabase(Tour tour)
+        {
+            try
+            {
+                using (var context = new TourPlannerDbContext())
+                {
+                    context.Tours.Add(tour);
+                    context.SaveChanges();
+                    Tours = new ObservableCollection<Tour>(context.Tours.ToList());
+                }
+            }
+            catch (AggregateException ex)
+            {
+                foreach (Exception ex2 in ex.Flatten().InnerExceptions)
+                {
+                    Log.LogError(ex2.Message);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                Log.LogError(ex.Message);
             }
         }
         private void AddTourLogToDatabase(TourLog tourLog)
@@ -277,9 +325,10 @@ namespace TourPlanner
             _context = new TourPlannerDbContext();
 
             ClearTours();
-           /* SelectedTour = new Tour(name: "Tour 1", time: 1, tour_desc: "Description 1", from: "From 1", to: "To 1", transport_type: "Bus", distance: 123, image_link: "https://www.odtap.com/wp-content/uploads/2019/04/Route-optimization-software-odtap.jpg", route_information: null);
-            SelectedTour.TourLogs.Add(new TourLog(comment: "sehr schön", "easy", 5, new DateTime(), 10));*/
+            /* SelectedTour = new Tour(name: "Tour 1", time: 1, tour_desc: "Description 1", from: "From 1", to: "To 1", transport_type: "Bus", distance: 123, image_link: "https://www.odtap.com/wp-content/uploads/2019/04/Route-optimization-software-odtap.jpg", route_information: null);
+             SelectedTour.TourLogs.Add(new TourLog(comment: "sehr schön", "easy", 5, new DateTime(), 10));*/
             // Add some sample tours
+            UpdateTours();
             Tours.Add(new Tour(
             name: "Tour 1",
             time: 1,
