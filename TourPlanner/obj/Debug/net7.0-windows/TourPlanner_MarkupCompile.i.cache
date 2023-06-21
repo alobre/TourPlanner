@@ -16,5 +16,5 @@ TRACE;DEBUG;NET;NET7_0;NETCOREAPP
 226-449832167
 UI\Views\App.xaml;UI\Views\MainWindow.xaml;UI\Views\NewTourDialog.xaml;
 
-False
+True
 
