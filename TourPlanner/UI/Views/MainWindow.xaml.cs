@@ -25,12 +25,16 @@ namespace TourPlanner
     public partial class MainWindow : Window
     {
         private MainVM viewModel;
-        private readonly TourPlannerDbContext _context = new TourPlannerDbContext();
-        private CollectionViewSource categoryViewSource;
+        /*private readonly TourPlannerDbContext _context = new TourPlannerDbContext();*/
+        private TourPlannerDbContext _context = new TourPlannerDbContext();
+        private CollectionViewSource ToursViewSource;
+        private CollectionViewSource ViewSource;
 
         public MainWindow()
         {
             InitializeComponent();
+            ViewSource = (CollectionViewSource)FindResource(nameof(ViewSource));
+            ToursViewSource = (CollectionViewSource)FindResource(nameof(ToursViewSource));
             viewModel = new MainVM(); // Create an instance of MainVM
             DataContext = viewModel;
             /*DataContext = new MainVM(); //Connecting the view with viewmodel*/
@@ -67,11 +71,21 @@ namespace TourPlanner
             _context.Database.EnsureCreated();
 
             // load the entities into EF Core
+            _context.Tours.Load();
             _context.TourLogs.Load();
+            
 
             // bind to the source
-            categoryViewSource.Source =
+            ViewSource.Source =
                 _context.TourLogs.Local.ToObservableCollection();
+            ToursViewSource.Source =
+                _context.Tours.Local.ToObservableCollection();
+        }
+
+        private void WndwMain_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            _context.Dispose();
+            base.OnClosing(e);
         }
     }
 }

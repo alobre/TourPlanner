@@ -7,13 +7,14 @@
         xmlns:local="clr-namespace:TourPlanner"
         x:Name="WndwMain"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1200" Loaded="WndwMain_Loaded">
+        Title="MainWindow" Height="800" Width="1200" Loaded="WndwMain_Loaded" Closing="WndwMain_Closing" >
 
     <Window.Resources>
         <ResourceDictionary>
-        <CollectionViewSource x:Key="categoryViewSource"/>
-        <CollectionViewSource x:Key="categoryTourLogsViewSource" 
-                              Source="{Binding TourLogs, Source={StaticResource categoryViewSource}}"/>
+            <CollectionViewSource x:Key="ViewSource"/>
+            <CollectionViewSource x:Key="ToursViewSource"/>
+            <CollectionViewSource x:Key="TourLogViewSource" 
+                              Source="{Binding TourLogs, Source={StaticResource ViewSource}}"/>
         
             <Style TargetType="{x:Type ItemsControl}">
                 <Setter Property="Margin" Value="5"/>
@@ -86,11 +87,9 @@
                 <Label Content="Route Image:" FontWeight="Bold"/>
                 <TextBlock Text="{Binding SelectedTour.RouteImage}"/>
 
-                <Label Content="Route Details:" FontWeight="Bold"/>
-                <TextBlock Text="{Binding SelectedTour.RouteDetails}"/>
             </StackPanel>
         </Grid>
-        <Image Source="{Binding SelectedTour.RouteDetails}" Grid.Column="4" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+        <Image Source="{Binding SelectedTour.RouteImage}" Grid.Column="4" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
 
 
 
@@ -133,7 +132,7 @@
         </DataTemplate>
     </ListView.ItemTemplate>
 </ListView>
-        <ListView Margin="10,10,0,13" ItemsSource="{Binding SelectedTour.TourLogs}" Name="TourLogs" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="4" Grid.RowSpan="3" Grid.ColumnSpan="2" Width="360">
+        <!--<ListView Margin="10,10,0,13" ItemsSource="{Binding SelectedTour.TourLogs}" Name="TourLogs" HorizontalAlignment="Left" Grid.Row="3" Grid.Column="4" Grid.RowSpan="3" Grid.ColumnSpan="2" Width="360">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
@@ -145,7 +144,8 @@
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
-        </ListView>
+            </ListView>
+        -->
         <Grid Background="AliceBlue" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="4" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -176,18 +176,23 @@
 
             <Button Command="{Binding AddTourLogCommand}" Grid.Column="1" Grid.Row="5" Margin="10" Background="#FFCAF4FF" >Add TourLog</Button>
         </Grid>
-        <DataGrid x:Name="categoryDataGrid" AutoGenerateColumns="False" 
-          EnableRowVirtualization="True" 
-          ItemsSource="{Binding Source={StaticResource categoryTourLogsViewSource}}" 
-          Margin="13,13,43,229" RowDetailsVisibilityMode="VisibleWhenSelected">
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding comment}"
-                            Header="name" Width="SizeToHeader"
-                            IsReadOnly="True"/>
-                <DataGridTextColumn Binding="{Binding tour_id}" Header="tour_id" 
-                            Width="*"/>
-            </DataGrid.Columns>
-        </DataGrid>
+
+        <ListView Grid.Row="3" Grid.Column="4" Grid.ColumnSpan="2" Grid.RowSpan="3"  ItemsSource="{Binding Source={StaticResource ViewSource}}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Tour_id}" />
+                        <TextBlock Text="{Binding Tour_id1}" />
+                        <TextBlock Text="{Binding Tour_id2}" />
+                        <TextBlock Text="{Binding Comment}" />
+                        <TextBlock Text="{Binding Difficulty}" />
+                        <TextBlock Text="{Binding Rating}" />
+                        <TextBlock Text="{Binding DateTime}" />
+                        <TextBlock Text="{Binding TotalTime}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
     </Grid>
 

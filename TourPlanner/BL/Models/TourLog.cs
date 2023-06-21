@@ -8,7 +8,7 @@ public class TourLog : ChangeNotifier
     public TourLog(int tour_id, string comment, string difficulty, int rating, DateTime dateTime, int totalTime) 
     {
         Tour_id = tour_id;
-        TourLog_Id = mod((tour_id + DateTime.Now.ToString("MM/dd/yyyy h:mm tt").GetHashCode()), 9999);
+        TourLog_id = mod((tour_id + DateTime.Now.ToString("MM/dd/yyyy h:mm tt").GetHashCode()), 9999);
         Comment = comment;
         Difficulty = difficulty;
         Rating = rating;
@@ -29,10 +29,10 @@ public class TourLog : ChangeNotifier
     
     private int _tourLog_id;
     [Key]
-    public int TourLog_Id
+    public int TourLog_id
     {
         get { return _tourLog_id; }
-        set { _tourLog_id = value; OnPropertyChanged(nameof(TourLog_Id)); }
+        set { _tourLog_id = value; OnPropertyChanged(nameof(TourLog_id)); }
     }
     private DateTime _dateTime;
     public DateTime DateTime

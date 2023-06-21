@@ -114,7 +114,6 @@ namespace TourPlanner
                 tour.To = result.dest.Address;
                 tour.RouteImage = route.URL;
                 tour.Name = $"{result.start.Address} TO {result.dest.Address}";
-                tour.RouteDetails = route.image;
                 tour.TourLogs = new ObservableCollection<TourLog>(new List<TourLog>());
                 Log.LogInfo("Neue Tour erstellt Name: " + tour.Name);
 
@@ -226,9 +225,10 @@ namespace TourPlanner
                 {
                     if(tour.Equals(SelectedTour))
                     {
-                        TourLog tourLog = new TourLog(tour_id: SelectedTour.Tour_id, comment: TourLogViewModel.Comment, difficulty: TourLogViewModel.Difficulty, rating: TourLogViewModel.Rating, dateTime: TourLogViewModel.Date, totalTime: int.Parse(TourLogViewModel.Time));
-                        tour.TourLogs.Add(tourLog);
-                        // Also add in DB
+                            TourLog tourLog = new TourLog(tour_id: SelectedTour.Tour_id, comment: TourLogViewModel.Comment, difficulty: TourLogViewModel.Difficulty, rating: TourLogViewModel.Rating, dateTime: TourLogViewModel.Date, totalTime: int.Parse(TourLogViewModel.Time));
+                            tour.TourLogs.Add(tourLog);
+
+                            AddTourLogToDatabase(tourLog);
                     }
                 }
 
@@ -249,6 +249,20 @@ namespace TourPlanner
             {
                 Log.LogError(ex.Message);
                 MessageBox.Show(ex.Message);
+            }
+        }
+        private void AddTourLogToDatabase(TourLog tourLog)
+        {
+            // Convert the DateTime value to UTC if it's not already in UTC
+            if (tourLog.DateTime.Kind != DateTimeKind.Utc)
+            {
+                tourLog.DateTime = tourLog.DateTime.ToUniversalTime();
+            }
+
+            using (var context = new TourPlannerDbContext())
+            {
+                context.TourLogs.Add(tourLog);
+                context.SaveChanges();
             }
         }
         private void InitCommands()
@@ -275,13 +289,12 @@ namespace TourPlanner
             transport_type: "Bus",
             distance: 123,
             image_link: "https://www.odtap.com/wp-content/uploads/2019/04/Route-optimization-software-odtap.jpg",
-            route_information: null,
              tourLogs: new ObservableCollection<TourLog>(new List<TourLog>()
             {
                 new TourLog(tour_id: 1234, comment: "sehr schön", difficulty: "easy", rating: 5, dateTime: DateTime.Now, totalTime: 10)
             })
             ));
-            Tours.Add(new Tour(name: "Tour 2", time: 2, tour_desc: "Description 2", from: "From 2", to: "To 2", transport_type: "Car", distance: 456, image_link: "https://www.odtap.com/wp-content/uploads/2019/04/Route-optimization-software-odtap.jpg", route_information: null));
+            Tours.Add(new Tour(name: "Tour 2", time: 2, tour_desc: "Description 2", from: "From 2", to: "To 2", transport_type: "Car", distance: 456, image_link: "https://www.odtap.com/wp-content/uploads/2019/04/Route-optimization-software-odtap.jpg"));
         }
     }
 }

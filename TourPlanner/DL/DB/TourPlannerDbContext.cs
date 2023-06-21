@@ -14,7 +14,7 @@ namespace TourPlanner.DL.DB
 {
     public class TourPlannerDbContext : DbContext
     {
-        protected readonly IConfiguration Configuration;
+        /*protected readonly IConfiguration Configuration;*/
         /*public TourPlannerDbContext(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,7 +24,7 @@ namespace TourPlanner.DL.DB
             optionsBuilder.UseNpgsql("Host = localhost; Port = 5432; Database = tour; Username = postgres; Password = postgres");
         }
 
-       /* public DbSet<Tour> Tours { get; set; }*/
+        public DbSet<Tour> Tours { get; set; }
         public DbSet<TourLog> TourLogs { get; set; }
     }
 }

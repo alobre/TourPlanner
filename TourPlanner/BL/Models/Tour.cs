@@ -13,12 +13,14 @@ using System.Windows.Media.Imaging;
 using JsonIgnoreAttribute = Newtonsoft.Json.JsonIgnoreAttribute;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TourPlanner.BL.Models
 {
     public class Tour : ChangeNotifier
     {
-        public Tour(string name, string tour_desc, string from, string to, string transport_type, float distance, int time, BitmapImage route_information, string image_link, ObservableCollection<TourLog> tourLogs = null)
+        public Tour(string name, string tour_desc, string from, string to, string transport_type, float distance, int time, string image_link, ObservableCollection<TourLog> tourLogs = null)
         {
             Tour_id = mod((DateTime.Now.ToString("MM/dd/yyyy h:mm tt")+name).GetHashCode(), 9999);
             Name = name;
@@ -28,7 +30,6 @@ namespace TourPlanner.BL.Models
             TransportType = transport_type;
             Distance = distance;
             Time = time;
-            RouteDetails = route_information;
             RouteImage = image_link;
             TourLogs = tourLogs != null ? new ObservableCollection<TourLog>(tourLogs) : new ObservableCollection<TourLog>();
         }
@@ -38,6 +39,7 @@ namespace TourPlanner.BL.Models
             return r < 0 ? r + m : r;
         }
         private int _tour_id;
+        [Key]
         public int Tour_id
         {
             get { return _tour_id; }
@@ -94,12 +96,6 @@ namespace TourPlanner.BL.Models
         {
             get { return _routeImage; }
             set { _routeImage = value; OnPropertyChanged(nameof(RouteImage)); }
-        }
-        [JsonIgnore]
-        private BitmapImage _routeDetails;
-        public BitmapImage RouteDetails {
-            get { return _routeDetails; }
-            set { _routeDetails = value; OnPropertyChanged(nameof(_routeDetails)); }
         }
 
         private List<TourLog> _logs;
