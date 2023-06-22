@@ -96,6 +96,7 @@ namespace TourPlanner
         public ICommand DeleteTourCommand { get; private set; }
         public ICommand ChangeSelectedTourCommand { get; private set; }
         public ICommand AddTourLogCommand { get; private set; }
+        public ICommand GenerateReportCommand { get; private set; }
 
         public async Task CreateNewTour()
         {
@@ -109,7 +110,7 @@ namespace TourPlanner
                 var route = await MapQuestRequestHandler.GetRouteAsync(result.start, result.dest);
 
                 var Distance = route.route.route.distance;
-                var Time = route.route.route.time;
+                int Time = (int)Math.Round(route.route.route.time / 60.0);
                 var Description = $"From {result.start.Address} to {result.dest.Address}";
                 var TransportType = route.route.route.options.routeType;
                 var From = $"{result.start.Address}";
@@ -312,6 +313,16 @@ namespace TourPlanner
                 context.SaveChanges();
             }
         }
+        public void GenerateReport()
+        {
+            string filePath = "../../../Reports/report.pdf";
+            PdfReportGenerator rg = new PdfReportGenerator();
+            using(var context = new TourPlannerDbContext())
+            {
+                rg.GenerateReport(filePath, context);
+            }
+            
+        }
         private void InitCommands()
         {
             Tours = new ObservableCollection<Tour>();
@@ -320,29 +331,13 @@ namespace TourPlanner
             DeleteTourCommand = new DeleteTourCMD(this);
             ChangeSelectedTourCommand = new ChangeSelectedTourCMD(this);
             AddTourLogCommand = new AddTourLogCMD(this);
+            GenerateReportCommand = new GenerateReportCMD(this);
             TourLogViewModel = new TourLogVM();
             _context = new TourPlannerDbContext();
 
             ClearTours();
-            /* SelectedTour = new Tour(name: "Tour 1", time: 1, tour_desc: "Description 1", from: "From 1", to: "To 1", transport_type: "Bus", distance: 123, image_link: "https://www.odtap.com/wp-content/uploads/2019/04/Route-optimization-software-odtap.jpg", route_information: null);
-             SelectedTour.TourLogs.Add(new TourLog(comment: "sehr schön", "easy", 5, new DateTime(), 10));*/
-            // Add some sample tours
+
             UpdateTours();
-            Tours.Add(new Tour(
-            name: "Tour 1",
-            time: 1,
-            tour_desc: "Description 1",
-            from: "From 1",
-            to: "To 1",
-            transport_type: "Bus",
-            distance: 123,
-            image_link: "https://www.odtap.com/wp-content/uploads/2019/04/Route-optimization-software-odtap.jpg",
-             tourLogs: new ObservableCollection<TourLog>(new List<TourLog>()
-            {
-                new TourLog(tour_id: 1234, comment: "sehr schön", difficulty: "easy", rating: 5, dateTime: DateTime.Now, totalTime: 10)
-            })
-            ));
-            Tours.Add(new Tour(name: "Tour 2", time: 2, tour_desc: "Description 2", from: "From 2", to: "To 2", transport_type: "Car", distance: 456, image_link: "https://www.odtap.com/wp-content/uploads/2019/04/Route-optimization-software-odtap.jpg"));
         }
     }
 }

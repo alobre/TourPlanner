@@ -16,6 +16,9 @@
     <PackageReference Include="Haley.MVVM">
       <Version>6.3.4</Version>
     </PackageReference>
+    <PackageReference Include="itext7" Version="8.0.0" />
+    <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.0" />
+    <PackageReference Include="itext7.bouncy-castle-fips-adapter" Version="8.0.0" />
     <PackageReference Include="log4net" Version="2.0.15" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.7" />
@@ -28,9 +31,6 @@
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.Management" Version="7.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BL\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="AddCommand.cs" />

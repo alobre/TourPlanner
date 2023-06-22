@@ -14,11 +14,6 @@ namespace TourPlanner.DL.DB
 {
     public class TourPlannerDbContext : DbContext
     {
-        /*protected readonly IConfiguration Configuration;*/
-        /*public TourPlannerDbContext(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }*/
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql("Host = localhost; Port = 5432; Database = tour; Username = postgres; Password = postgres");

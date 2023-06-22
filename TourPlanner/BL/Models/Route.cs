@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TourPlanner.DL.Model
+namespace TourPlanner.BL.Models
 {
     internal class Route
     {
