@@ -6,6 +6,8 @@ using log4net;
 using TourPlanner.BL.Services.MapQuest;
 using Haley.Utils;
 using System.Windows.Input;
+using TourPlanner.UI.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace nUnitTest
 {
@@ -201,11 +203,9 @@ namespace nUnitTest
             _context.Tours.Add(tour);
             _context.SaveChanges();
 
-            // Act
             var tourId = tour.Tour_id;
             var dbTour = _context.Tours.FirstOrDefault(t => t.Tour_id == tourId);
 
-            // Assert
             Assert.NotNull(dbTour);
             Assert.AreEqual(tourId, dbTour.Tour_id);
         }
@@ -263,27 +263,63 @@ namespace nUnitTest
                 image_link: "https://www.odtap.com/wp-content/uploads/2019/04/Route-optimization-software-odtap.jpg");
 
             _context.Tours.Add(tour1);
+            _context.SaveChanges();
 
-            var dbTour = _context.Tours.Where(t => t.Distance == 10000).ToList();
+            var dbTour = _context.Tours.FirstOrDefault(t => t.Distance == 10000);
             Assert.IsNotNull(dbTour);
 
             _context.Tours.Remove(tour1);
             _context.SaveChanges();
 
-            var deletedTour = _context.Tours.Where(t => t.Distance == 10000).ToList();
+            var deletedTour = _context.Tours.Where(t => t.Distance == 10000);
             Assert.IsEmpty(deletedTour);
 
         }
-        [Test, Order(20)]
-        public Task DeleteAllByTestGeneratedTours_WhenCalled_CheckIfEmpty()
+        [Test, Order(14)]
+        public async Task SetTourLog_WhenCalled_CheckIfTourLog_idIsValid()
         {
-            var toursToDelete = _context.Tours.Where(t => t.Distance == 9999).ToList();
+            TourLog TL = new TourLog(tour_id: 9999, comment: "testComment", difficulty: "easy", rating: 5, dateTime: DateTime.Now, totalTime: 9999);
+            Assert.IsTrue(TL.TourLog_id >= 0);
+        }
+        [Test, Order(15)]
+        public async Task SetTourLogToDB_WhenCalled_CheckOfTourLogIsGiven()
+        {
+            TourLog TL = new TourLog(tour_id: 9999, comment: "testComment", difficulty: "easy", rating: 5, dateTime: DateTime.Now, totalTime: 9999);
+            if (TL.DateTime.Kind != DateTimeKind.Utc)
+            {
+                TL.DateTime = TL.DateTime.ToUniversalTime();
+            }
+            _context.TourLogs.Add(TL);
+            _context.SaveChanges(); 
 
-            _context.Tours.RemoveRange(toursToDelete);
+            var dbTourLog = _context.TourLogs.Where(t => t.Tour_id == 9999);
+
+            Assert.NotNull(dbTourLog);
+        }
+
+        [Test, Order(16)]
+        public async Task DeleteTourLog_WhenCalled_CheckIfNotGiven()
+        {
+            var allTourLogs = _context.TourLogs.Where(tl => tl.Tour_id == 9999);
+
+            _context.TourLogs.RemoveRange(allTourLogs);
             _context.SaveChanges();
 
-            var remainingTours = _context.Tours.Where(t => t.Distance == 9999).ToList();
-            Assert.IsEmpty(remainingTours);
+            var searchedTL = _context.TourLogs.FirstOrDefault(t => t.Tour_id == 9999);
+            Assert.IsNull(searchedTL);
+        }
+        [Test, Order(17)]
+        public async Task DeleteAllByTestGeneratedTours_WhenCalled_CheckIfEmpty()
+        {
+            _context.Tours.Load();
+            var allTours = _context.Tours.Where(t => t.Distance == 9999).ToList();
+            foreach (Tour t in allTours)
+            {
+                _context.Tours.Remove(t);
+                _context.SaveChanges();
+            }
+            var remainingTours = _context.Tours.FirstOrDefault(t => t.Distance == 9999);
+            Assert.IsNull(remainingTours);
         }
     }
 }

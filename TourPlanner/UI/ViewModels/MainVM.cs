@@ -145,7 +145,6 @@ namespace TourPlanner
                 Log.LogError(ex.Message);
             }
         }
-        public event PropertyChangedEventHandler PropertyChanged;
         public async Task UpdateTours()
         {
             using (var context = new TourPlannerDbContext())
